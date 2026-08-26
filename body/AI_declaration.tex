@@ -1,0 +1,180 @@
+% !TEX program = xelatex
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[UTF8]{ctex}
+\usepackage{geometry}
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{float}
+\usepackage{titlesec}
+
+\titleformat{\section}{\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{1em}{}
+
+\begin{document}
+
+\begin{center}
+    {\LARGE\bfseries 海上油田人员直升机运载计划编排的建模与优化}\\[1em]
+    {\large AI工具使用说明}
+\end{center}
+
+\vspace{1em}
+
+本作品在撰写过程中使用了AI工具辅助完成部分建模分析、算法设计与代码实现工作。以下详细说明所用AI工具的名称、版本、使用目的、关键交互记录及人工修改情况。
+
+% ============================================================
+\section{所用AI工具信息}
+
+\begin{enumerate}
+    \item \textbf{DeepSeek网页端}（\url{https://chat.deepseek.com}）
+    \begin{itemize}
+        \item 模型版本：DeepSeek-V4-Flash、DeepSeek-V4-Pro
+        \item 使用时间：2026年8月13日--8月17日
+        \item 用途：集合划分模型构建思路讨论、Clarke-Wright节省算法原理咨询、航段级容量约束线性化方法验证、列生成框架设计讨论、鲁棒优化方法咨询
+    \end{itemize}
+
+    \item \textbf{MiMo Code}（小米MiMo代码助手）
+    \begin{itemize}
+        \item 模型版本：MiMo-v2.5-Pro
+        \item 使用时间：2026年8月13日--8月17日
+        \item 用途：Python求解器代码编写与调试、COPT求解器接口调用、数据处理脚本开发、LaTeX公式排版辅助
+    \end{itemize}
+
+    \item \textbf{TRAE / TRAE Work}（字节跳动AI编程助手）
+    \begin{itemize}
+        \item 使用时间：2026年8月13日--8月17日
+        \item 用途：Python代码补全与重构、路径生成算法实现、燃油可行性检查模块开发
+    \end{itemize}
+
+    \item \textbf{Codex}（OpenAI代码生成模型）
+    \begin{itemize}
+        \item 使用时间：2026年8月13日--8月17日
+        \item 用途：集合划分MIP模型代码生成、验证脚本编写
+    \end{itemize}
+\end{enumerate}
+
+% ============================================================
+\section{具体使用目的与环节}
+
+\begin{table}[H]
+\centering
+\caption{AI工具使用情况总览}
+\label{tab:ai-usage}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{|c|p{5cm}|p{5cm}|c|}
+\hline
+\textbf{序号} & \textbf{使用目的} & \textbf{对应环节} & \textbf{工具} \\
+\hline
+1 & 集合划分模型与两阶段$\varepsilon$-容差框架设计讨论 & 问题一/二模型建立 & DeepSeek \\
+\hline
+2 & Clarke-Wright节省算法原理与扩展策略咨询 & 问题一路径生成 & DeepSeek \\
+\hline
+3 & 航段级容量约束前缀和线性化方法验证 & 问题二模型建立 & DeepSeek \\
+\hline
+4 & 服务日入列与事件驱动时刻框架设计 & 问题三列生成策略 & DeepSeek \\
+\hline
+5 & 鲁棒优化与动态调度机制咨询 & 模型推广部分 & DeepSeek \\
+\hline
+6 & Python求解器核心代码编写与调试 & 全题代码实现 & MiMo/TRAE/Codex \\
+\hline
+7 & COPT求解器API调用与参数调优 & MIP求解阶段 & MiMo/TRAE \\
+\hline
+8 & 验证脚本（容量、时间窗、燃油等七类约束） & 结果校验 & Codex/MiMo \\
+\hline
+9 & LaTeX公式、图表、算法流程图排版 & 论文撰写阶段 & MiMo/TRAE \\
+\hline
+\end{tabular}
+\end{table}
+
+% ============================================================
+\section{关键交互记录}
+
+\subsection{集合划分模型与两阶段优化框架}
+
+对话链接：\url{https://chat.deepseek.com/share/9e9zn4bmmmom7ows4r}
+
+\begin{itemize}
+    \item \textbf{主要提问内容}：\\
+    请帮我分析海上油田人员直升机运输问题的建模思路。需求包括出海、海返和穿梭三类，目标是最小化总飞机使用时间，同时考虑座位利用率和燃油消耗等指标。如何建立集合划分模型？两阶段$\varepsilon$-容差框架如何设计？
+    
+    \item \textbf{AI回复要点}：
+    \begin{enumerate}
+        \item 建议采用"路径预生成+集合划分"的两阶段框架，先生成高质量候选路径，再以MIP选优；
+        \item 解释了$\varepsilon$-容差方法的基本思想：第一阶段最小化主导目标，第二阶段在容差带内优化次要目标；
+        \item 建议使用AHP方法确定二级指标权重，并给出了判断矩阵构造示例；
+        \item 提出了用"浪费座公里"作为座位利用率的线性代理，保持第二阶段为线性MIP。
+    \end{enumerate}
+    
+    \item \textbf{采纳与修改情况}：\\
+    采纳了集合划分与两阶段$\varepsilon$-容差框架的核心思路，进行了以下修改与扩展：
+    \begin{itemize}
+        \item 将AHP判断矩阵调整为在途时间>座位利用率>燃油消耗的优先级顺序，计算得到权重$w_\tau=0.6250$，$w_u=0.2385$，$w_F=0.1365$；
+        \item 在问题二中引入航段级容量约束，用前缀和形式线性表达，避免二元时序变量；
+        \item 在问题三中设计服务日入列机制，将跨天需求的服务日期作为全局决策变量。
+    \end{itemize}
+\end{itemize}
+
+\subsection{列生成框架与服务日入列机制}
+
+对话链接：\url{https://chat.deepseek.com/share/l3uhuqxisb7bq6q9ii}
+
+\begin{itemize}
+    \item \textbf{主要提问内容}：\\
+    问题三是带时间窗的多日排班问题，需求时间窗跨天（84.1\%的需求时间窗跨天，均值41.6小时）。如何设计列生成框架？服务日期如何决策？如何保证所有非临时人员全覆盖？
+    
+    \item \textbf{AI回复要点}：
+    \begin{enumerate}
+        \item 建议采用"服务日入列"策略：每条需求在其可行日期的每一天均生成候选列，由MILP全局决定服务日与拼座；
+        \item 提出"事件驱动时刻"替代均匀网格：候选起飞时刻取需求可行窗口的最早时刻；
+        \item 建议设计"覆盖兜底"机制：若某非临时人员未被任何列覆盖，为其生成专属直达列族；
+        \item 建议阶段二采用逐日prize-collecting形式插入临时任务。
+    \end{enumerate}
+    
+    \item \textbf{采纳与修改情况}：\\
+    全面采纳了服务日入列与事件驱动时刻的设计思路，并进行了以下工程化改进：
+    \begin{itemize}
+        \item 列池剪枝策略：按(40,10)对每需求行保留全局最省40列、每(行,日,机场,机型)保留最省10列，控制列池规模在约7万列；
+        \item 覆盖兜底实现：为未覆盖人员生成专属直达列族，保证3840名非临时人员全部可服务；
+        \item 阶段二预算控制：以阶段一最优总时间$T^*$为约束，在不增加总时间的前提下最大化临时任务承运。
+    \end{itemize}
+\end{itemize}
+
+% ============================================================
+\section{人工修改与质量保证}
+
+\begin{enumerate}
+    \item \textbf{模型层面}：AI提供的建模思路仅作为参考，核心模型设计（集合划分、航段级容量约束、服务日入列机制）均经过团队独立推导与验证。特别是：
+    \begin{itemize}
+        \item 问题一单向运输座位利用率不超过50\%的结构性上界证明；
+        \item 问题二座位复用倍数上界$K+1$的理论推导；
+        \item 问题三按天解耦定理（定理1）的严格证明。
+    \end{itemize}
+    
+    \item \textbf{算法层面}：AI提供的代码仅作为实现参考，实际代码经过以下修改与优化：
+    \begin{itemize}
+        \item 路径生成采用分层扩展策略，距离阈值递减以控制规模；
+        \item 燃油可行性检查采用加油组合枚举+中转点插入机制；
+        \item 机队并发约束采用区间图完美性保证指派可行性。
+    \end{itemize}
+    
+    \item \textbf{求解层面}：COPT求解器参数调优与结果验证由团队独立完成：
+    \begin{itemize}
+        \item 阶段一在70051列剪枝列池内1197秒证到整数最优（相对间隙0.0000\%）；
+        \item 阶段二7个单日prize-collecting模型均证整数最优；
+        \item 最终方案经容量、时间窗、日期匹配、OD一致性、方向顺序、重复分配、航油七类硬约束统一验证，全部零违规。
+    \end{itemize}
+    
+    \item \textbf{论文层面}：全文由人工独立撰写，AI工具仅辅助完成技术讨论与代码实现，未直接生成论文文本内容。所有公式推导、结果分析与结论均经过作者独立验证。
+    
+    \item \textbf{方案消融对比}：将本文最终框架与旧版"贪心按天分配+均匀起飞偏移+单日两层MIP+背包插入"框架进行对比，验证了服务日入列、事件驱动时刻与覆盖兜底的关键作用（$T^*$降低45.6\%，架次降低44.6\%）。
+\end{enumerate}
+
+\vspace{1em}
+\noindent\textbf{声明}：本团队对论文中所有内容的真实性、准确性和原创性负责。AI工具的使用仅限于辅助建模思路讨论、算法原理咨询与代码实现，核心模型构建、理论证明、求解策略设计与论文撰写均由团队成员独立完成。
+
+\end{document}
