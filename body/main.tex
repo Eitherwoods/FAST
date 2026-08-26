@@ -48,6 +48,7 @@
 
 \subsection{问题一分析}
 
+问题一要求在天体$S$位于基准球面正上方（$\alpha=0^{\circ}$，$\beta=90^{\circ}$）时确定理想抛物面。此时抛物面的对称轴沿$z$轴正方向，馈源舱位于轴线上方。解决此问题的关键步骤为：首先建立馈源舱（焦点）的位置模型，利用焦径比$F/R=0.466$确定焦点坐标；然后根据抛物面的几何定义——抛物面上任意一点到焦点的距离等于该点到准线的距离——推导出理想抛物面的解析方程；最后代入$\alpha=0^{\circ}$、$\beta=90^{\circ}$的特殊条件，得到该情形下的具体抛物面方程及其顶点坐标。
 
 \subsection{问题二分析}
 
@@ -59,7 +60,13 @@
 \section{问题假设}
 
 \begin{description}
-\item[1. ] 
+\item[1. ] 反射面板为理想刚性平面，不考虑其自身弹性变形，调节后面板形状严格由三个顶点（主索节点）决定。
+\item[2. ] 电磁波信号及反射信号均视为直线传播，不考虑大气折射等影响。
+\item[3. ] 主索节点调节后，相邻节点之间的距离变化幅度不超过$0.07\%$，即可视为索长近似不变。
+\item[4. ] 反射面板上的小圆孔直径远小于所观测天体电磁波的波长，不影响反射效果，可视为无孔面板。
+\item[5. ] 促动器沿基准球面径向安装，其伸缩方向严格沿径向指向球心，伸缩范围为$-0.6\sim+0.6\,\mathrm{m}$。
+\item[6. ] 将主索节点坐标视为对应的反射面板顶点坐标，即面板顶点与主索节点重合。
+\item[7. ] 基准态下所有主索节点均严格位于基准球面上。
 \end{description}
 
 % ==================== 符号说明 ====================
@@ -78,17 +85,100 @@
 \endfoot
 \bottomrule
 \endlastfoot
-$\mathcal{}$ &  $ $ &  &
+$R$ & 基准球面半径（$\approx300$） & $\mathrm{m}$ & $F$ & 焦距，$F=0.466R$ & $\mathrm{m}$ \\
+$C$ & 基准球面球心（坐标原点） & --- & $D$ & 基准球面口径（$500$） & $\mathrm{m}$ \\
+$\alpha$ & 天体方位角 & $^{\circ}$ & $\beta$ & 天体仰角 & $^{\circ}$ \\
+$\mathbf{n}$ & 抛物面轴线方向向量 & --- & $F/R$ & 焦径比（$0.466$） & --- \\
+$Q$ & 馈源舱（抛物面焦点） & --- & $\vec{OQ}$ & 馈源舱位置向量 & $\mathrm{m}$ \\
+$M(x,y,z)$ & 抛物面上任意一点 & $\mathrm{m}$ & $f$ & 抛物面焦距，$f=0.466R$ & $\mathrm{m}$ \\
+$a,b,c$ & 轴向量$\mathbf{n}$的分量 & --- & $V$ & 抛物面顶点 & --- \\
 \end{longtable}
 
 % ==================== 问题一 ====================
-\section{ 问题一}
+\section{问题一：理想抛物面的确定}
 
 \subsection{模型建立}
 
+\subsubsection{馈源舱（焦点）位置模型}
+
+设抛物面轴线方向向量为$\mathbf{n}$，由天体方位角$\alpha$和仰角$\beta$可得：
+\begin{equation}
+\mathbf{n} = (\cos\beta\cos\alpha,\;\cos\beta\sin\alpha,\;\sin\beta)
+\end{equation}
+
+记$a=\cos\beta\cos\alpha$，$b=\cos\beta\sin\alpha$，$c=\sin\beta$，则$\mathbf{n}=(a,b,c)$。
+
+馈源舱$Q$位于抛物面轴线上，且为抛物面的焦点。由题目条件，馈源舱接收平面中心$P$位于焦面上，焦面半径$R-F=R-0.466R=0.534R$。因此馈源舱的位置向量为：
+\begin{equation}
+\vec{OQ} = -0.534R\,\mathbf{n}
+\end{equation}
+
+即焦点$Q$的坐标为：
+\begin{equation}
+Q = (-0.534Ra,\;-0.534Rb,\;-0.534Rc)
+\end{equation}
+
+\subsubsection{理想抛物面模型}
+
+由抛物面的几何定义，抛物面上任意一点$M(x,y,z)$到焦点$Q$的距离等于该点沿轴线方向到准线的距离，即：
+\begin{equation}
+\left|\vec{OM}-\vec{OQ}\right| = (\vec{OM}-\vec{OQ})\cdot\mathbf{n} + 2F
+\end{equation}
+
+将$\vec{OM}=(x,y,z)$、$\vec{OQ}=-0.534R\,\mathbf{n}$代入上式，得：
+\begin{multline}
+(x+0.534Ra)^{2} + (y+0.534Rb)^{2} + (z+0.534Rc)^{2} \\
+= (ax+by+cz+0.534R+2F)^{2}
+\end{multline}
+
+其中$F=0.466R$为焦距。
+
+\subsection{求解过程}
+
+当待观测天体$S$位于基准球面正上方时，$\alpha=0^{\circ}$，$\beta=90^{\circ}$，代入方向向量得：
+\begin{equation}
+a = \cos 90^{\circ}\cos 0^{\circ} = 0,\quad
+b = \cos 90^{\circ}\sin 0^{\circ} = 0,\quad
+c = \sin 90^{\circ} = 1
+\end{equation}
+
+即轴线方向为$\mathbf{n}=(0,0,1)$，抛物面以$z$轴为对称轴。将上述分量代入抛物面方程~(5)：
+\begin{equation}
+x^{2}+y^{2}+(z+0.534R)^{2} = (z+0.534R+2F)^{2}
+\end{equation}
+
+记$u=z+0.534R$，则上式化为：
+\begin{equation}
+x^{2}+y^{2}+u^{2} = (u+2F)^{2}
+\end{equation}
+
+展开右端：
+\begin{equation}
+x^{2}+y^{2}+u^{2} = u^{2}+4Fu+4F^{2}
+\end{equation}
+
+化简得：
+\begin{equation}
+x^{2}+y^{2} = 4Fu+4F^{2} = 4F(u+F) = 4F(z+0.534R+F)
+\end{equation}
+
+将$F=0.466R$代入$0.534R+F=0.534R+0.466R=R$，故：
+\begin{equation}
+\boxed{x^{2}+y^{2} = 4F(z+R)}
+\end{equation}
+
+此即问题一的理想抛物面方程，是以$z$轴为对称轴、开口向$z$负方向的旋转抛物面。
+
+抛物面顶点坐标为$V(0,\,0,\,-R)$，即$(0,\,0,\,-300)$，恰与基准球面的最低点（南极）重合。
+
+代入$R=300\,\mathrm{m}$，$F=0.466\times300=139.8\,\mathrm{m}$，抛物面方程为：
+\begin{equation}
+x^{2}+y^{2} = 559.2\,(z+300)
+\end{equation}
+
 \subsection{求解结果}
 
-问题一的求解结果如表~\ref{tab:q1_result} 所示。
+问题一的求解结果如表~\ref{tab:q1_result}所示。
 
 \begin{longtable}{lc}
 \caption{问题一求解结果} \label{tab:q1_result} \\
