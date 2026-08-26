@@ -8,15 +8,216 @@
 
 FAST由主动反射面、信号接收系统（馈源舱）以及相关的控制、测量和支承系统组成（如图1所示），其中主动反射面系统是由主索网、反射面板、下拉索、促动器及支承结构等主要部件构成的一个可调节球面。主索网由柔性主索按照短程线三角网格方式构成，用于支承反射面板（含背架结构），每个三角网格上安装一块反射面板，整个索网固定在周边支承结构上。每个主索节点连接一根下拉索，下拉索下端与固定在地表的促动器连接，实现对主索网的形态控制。反射面板间有一定缝隙，能够确保反射面板在变位时不会被挤压、拉扯而变形。索网整体结构、反射面板及其连接示意图见图2和图3。
 
-图1 FAST三维示意图
+**图1　FAST三维示意图**（位图照片 · 三维透视）
 
-图2 整体索网结构
+> 图1 原为三维实景**照片（位图）**，无法经纯文本通道传递；下方用 SVG 代码示意其**结构与空间布局**（组件 + 位置关系），纯文本 AI 可据指令重建。原照片保留于 `assets/fig1_fast.png` 供人查看。
 
-图3 反射面板、主索网结构及其连接示意图 （含 (a)(b) 两个子图）
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 430" width="100%" style="max-width:720px;background:#fff">
+  <!-- 喀斯特洼地台址：洼地地形 -->
+  <path d="M 40 330 Q 160 250 300 292 Q 420 250 560 296 Q 640 320 680 330 L 680 400 L 40 400 Z" fill="#cfc8b8" stroke="#000" stroke-width="1.2"/>
+  <text x="60" y="360" font-size="14" fill="#000">喀斯特洼地台址</text>
+  <!-- 主动反射面：碟形反射面 -->
+  <ellipse cx="360" cy="262" rx="188" ry="60" fill="#aeb7c2" stroke="#000" stroke-width="1.5"/>
+  <ellipse cx="360" cy="262" rx="128" ry="40" fill="none" stroke="#000" stroke-width="1"/>
+  <ellipse cx="360" cy="262" rx="70" ry="22" fill="none" stroke="#000" stroke-width="1"/>
+  <text x="242" y="306" font-size="14" fill="#000">主动反射面</text>
+  <!-- 支撑塔：环布四周的塔架 -->
+  <g stroke="#000" stroke-width="2">
+    <line x1="150" y1="238" x2="150" y2="120"/>
+    <line x1="570" y1="238" x2="570" y2="120"/>
+    <line x1="250" y1="130" x2="250" y2="40"/>
+    <line x1="470" y1="130" x2="470" y2="40"/>
+  </g>
+  <g stroke="#000" stroke-width="0.9" fill="#000">
+    <circle cx="150" cy="120" r="3"/><circle cx="570" cy="120" r="3"/>
+    <circle cx="250" cy="40" r="3"/><circle cx="470" cy="40" r="3"/>
+  </g>
+  <text x="96" y="150" font-size="14" fill="#000">支撑塔</text>
+  <!-- 馈源舱：悬挂于反射面正上方 -->
+  <rect x="350" y="80" width="20" height="14" fill="#333" stroke="#000" stroke-width="1"/>
+  <text x="430" y="70" font-size="14" fill="#000">馈源舱</text>
+  <!-- 缆索：塔顶 -> 馈源舱 -->
+  <g stroke="#666" stroke-width="1" fill="none">
+    <line x1="150" y1="120" x2="360" y2="87"/>
+    <line x1="570" y1="120" x2="356" y2="87"/>
+    <line x1="250" y1="40" x2="355" y2="80"/>
+    <line x1="470" y1="40" x2="365" y2="80"/>
+  </g>
+</svg>
+
+| 标注/实体 | 含义 | 位置关系 |
+|---|---|---|
+| 喀斯特洼地台址 | FAST 所在的喀斯特地貌天然洼地 | 构成天线场地的地形背景 |
+| 主动反射面 | 球面反射天线主镜面（碟形），由索网＋反射面板构成 | 置于洼地中央，镜面开口朝上 |
+| 馈源舱 | 信号接收舱 | 悬挂于反射面正上方 |
+| 支撑塔 | 环布反射面周边的塔架，经缆索悬吊馈源舱 | 沿反射面外围均布 |
+
+**图2　整体索网结构**（主索网球冠三角网格）
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 470" width="100%" style="max-width:820px;background:#fff">
+  <!-- 地面线 -->
+  <line x1="40" y1="412" x2="780" y2="412" stroke="#000" stroke-width="1.5"/>
+  <!-- 周边支承结构：球冠外缘刚性环 -->
+  <ellipse cx="410" cy="168" rx="252" ry="60" fill="none" stroke="#000" stroke-width="2"/>
+  <!-- 主索网：短程线三角网格（同心环 + 放射线，示意） -->
+  <g stroke="#666" stroke-width="1.1" fill="none">
+    <ellipse cx="410" cy="168" rx="150" ry="34"/>
+    <line x1="410" y1="168" x2="410" y2="110"/>
+    <line x1="410" y1="168" x2="660" y2="170"/>
+    <line x1="410" y1="168" x2="160" y2="170"/>
+    <line x1="410" y1="168" x2="598" y2="230"/>
+    <line x1="410" y1="168" x2="222" y2="230"/>
+    <line x1="410" y1="168" x2="530" y2="126"/>
+    <line x1="410" y1="168" x2="290" y2="126"/>
+    <line x1="410" y1="110" x2="530" y2="126"/>
+    <line x1="410" y1="110" x2="290" y2="126"/>
+    <line x1="530" y1="126" x2="598" y2="230"/>
+    <line x1="290" y1="126" x2="222" y2="230"/>
+    <line x1="660" y1="170" x2="598" y2="230"/>
+    <line x1="160" y1="170" x2="222" y2="230"/>
+  </g>
+  <!-- 主索网节点 -->
+  <g fill="#000">
+    <circle cx="410" cy="110" r="3"/><circle cx="410" cy="206" r="3"/>
+    <circle cx="530" cy="126" r="3"/><circle cx="290" cy="126" r="3"/>
+    <circle cx="598" cy="230" r="3"/><circle cx="222" cy="230" r="3"/>
+    <circle cx="660" cy="170" r="3"/><circle cx="160" cy="170" r="3"/>
+  </g>
+  <!-- 下拉索：从外缘节点下垂至地面 -->
+  <line x1="180" y1="225" x2="150" y2="412" stroke="#000" stroke-width="1.3"/>
+  <line x1="640" y1="225" x2="670" y2="412" stroke="#000" stroke-width="1.3"/>
+  <!-- 标注 -->
+  <g font-size="14" fill="#000" font-family="sans-serif">
+    <line x1="300" y1="72" x2="352" y2="128" stroke="#000" stroke-width="1"/>
+    <text x="238" y="72">周边支承结构</text>
+    <line x1="560" y1="72" x2="520" y2="126" stroke="#000" stroke-width="1"/>
+    <text x="540" y="72">主索网</text>
+    <line x1="170" y1="300" x2="160" y2="252" stroke="#000" stroke-width="1"/>
+    <text x="100" y="308">下拉索</text>
+  </g>
+</svg>
+
+**图3　反射面板、主索网结构及其连接示意图**（(a) 侧视断面；(b) 主索网俯视三角网格）
+
+**(a) 反射面板结构侧视断面（自上而下：反射面板→背架→主索→主索节点→下拉索→促动器）**
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 300" width="100%" style="max-width:640px;background:#fff">
+  <!-- 反射面板 -->
+  <path d="M 30 70 Q 320 40 610 70" fill="#cdd6e5" stroke="#000" stroke-width="1.5"/>
+  <!-- 背架 -->
+  <path d="M 45 88 Q 320 60 595 88" fill="none" stroke="#000" stroke-width="1.2"/>
+  <!-- 主索 -->
+  <path d="M 60 108 Q 320 84 580 108" fill="none" stroke="#000" stroke-width="1.6"/>
+  <!-- 主索节点 -->
+  <g fill="#000">
+    <circle cx="150" cy="92" r="4"/><circle cx="320" cy="78" r="4"/><circle cx="490" cy="92" r="4"/>
+  </g>
+  <!-- 下拉索 -->
+  <line x1="150" y1="96" x2="150" y2="212" stroke="#000" stroke-width="1.3"/>
+  <line x1="320" y1="82" x2="320" y2="212" stroke="#000" stroke-width="1.3"/>
+  <line x1="490" y1="96" x2="490" y2="212" stroke="#000" stroke-width="1.3"/>
+  <!-- 促动器：地面端竖条 -->
+  <g stroke="#000" stroke-width="2.2" stroke-linecap="round">
+    <line x1="150" y1="212" x2="150" y2="256"/>
+    <line x1="320" y1="212" x2="320" y2="256"/>
+    <line x1="490" y1="212" x2="490" y2="256"/>
+  </g>
+  <!-- 地面 -->
+  <line x1="20" y1="256" x2="620" y2="256" stroke="#000" stroke-width="1"/>
+  <!-- 标注 -->
+  <g font-size="13" fill="#000" font-family="sans-serif">
+    <line x1="70" y1="34" x2="120" y2="62" stroke="#000" stroke-width="0.9"/>
+    <text x="36" y="34">反射面板</text>
+    <line x1="40" y1="128" x2="86" y2="100" stroke="#000" stroke-width="0.9"/>
+    <text x="30" y="142">背架</text>
+    <line x1="560" y1="138" x2="492" y2="106" stroke="#000" stroke-width="0.9"/>
+    <text x="548" y="152">主索</text>
+    <line x1="320" y1="34" x2="320" y2="72" stroke="#000" stroke-width="0.9"/>
+    <text x="322" y="34">主索节点</text>
+    <line x1="118" y1="170" x2="150" y2="150" stroke="#000" stroke-width="0.9"/>
+    <text x="58" y="178">下拉索</text>
+    <line x1="196" y1="258" x2="150" y2="240" stroke="#000" stroke-width="0.9"/>
+    <text x="196" y="272">促动器</text>
+  </g>
+</svg>
+
+**(b) 主索网俯视三角网格（短程线分布，中心节点为主索交汇点）**
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 340" width="100%" style="max-width:400px;background:#fff">
+  <!-- 三条主索穿过中心节点，形成六向短程线 -->
+  <g stroke="#444" stroke-width="1.4">
+    <line x1="96" y1="170" x2="304" y2="170"/>
+    <line x1="252" y1="80" x2="148" y2="260"/>
+    <line x1="148" y1="80" x2="252" y2="260"/>
+  </g>
+  <!-- 中心节点 -->
+  <circle cx="200" cy="170" r="5" fill="#000"/>
+  <!-- 内圈(半径104)六节点 -->
+  <g fill="#000">
+    <circle cx="304" cy="170" r="4"/><circle cx="96" cy="170" r="4"/>
+    <circle cx="252" cy="260" r="4"/><circle cx="148" cy="260" r="4"/>
+    <circle cx="252" cy="80" r="4"/><circle cx="148" cy="80" r="4"/>
+  </g>
+  <!-- 外圈(半径155)六节点及连线 -->
+  <g stroke="#888" stroke-width="1.1" fill="#000">
+    <circle cx="355" cy="170" r="3.2"/><circle cx="45" cy="170" r="3.2"/>
+    <circle cx="277.5" cy="304" r="3.2"/><circle cx="122.5" cy="304" r="3.2"/>
+    <circle cx="277.5" cy="36" r="3.2"/><circle cx="122.5" cy="36" r="3.2"/>
+  </g>
+  <g stroke="#888" stroke-width="1.1" fill="none">
+    <line x1="304" y1="170" x2="355" y2="170"/>
+    <line x1="96" y1="170" x2="45" y2="170"/>
+    <line x1="252" y1="80" x2="277.5" y2="36"/>
+    <line x1="148" y1="80" x2="122.5" y2="36"/>
+    <line x1="252" y1="260" x2="277.5" y2="304"/>
+    <line x1="148" y1="260" x2="122.5" y2="304"/>
+  </g>
+  <!-- 标注 -->
+  <g font-size="13" fill="#000" font-family="sans-serif">
+    <line x1="312" y1="26" x2="280" y2="60" stroke="#000" stroke-width="0.9"/>
+    <text x="312" y="26">主索</text>
+    <line x1="330" y1="290" x2="300" y2="266" stroke="#000" stroke-width="0.9"/>
+    <text x="298" y="304">主索节点</text>
+  </g>
+</svg>
 
 主动反射面可分为两个状态：**基准态**和**工作态**。基准态时反射面为半径约300米、口径为500米的球面（基准球面）；工作态时反射面的形状被调节为一个300米口径的近似旋转抛物面（工作抛物面）。图4是FAST在观测时的剖面示意图，C点是基准球面的球心，馈源舱接收平面的中心只能在与基准球面同心的一个球面（焦面）上移动，两同心球面的半径差为 F = 0.466R （其中R为基准球面半径，称F/R为焦径比）。馈源舱接收信号的有效区域为直径1米的中心圆盘。当FAST观测某个方向的天体目标S时，馈源舱接收平面的中心被移动到直线SC与焦面的交点P处，调节基准球面上的部分反射面板形成以直线SC为对称轴、以P为焦点的近似旋转抛物面，从而将来自目标天体的平行电磁波反射汇聚到馈源舱的有效区域。
 
-图4 FAST剖面示意图
+**图4　FAST剖面示意图**（基准球面 R=300m、焦面半径 R−0.466R、工作抛物面、照明区域口径 300m、底座口径 D=500m）
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" width="100%" style="max-width:800px;background:#fff">
+  <!-- 球心 C -->
+  <circle cx="420" cy="90" r="3" fill="#000"/>
+  <text x="432" y="94" font-size="15">C</text>
+  <!-- 基准球面 R=300m（半径360px，球心C） -->
+  <path d="M 60 90 A 360 360 0 0 0 420 450 A 360 360 0 0 0 780 90" fill="none" stroke="#000" stroke-width="1.6"/>
+  <text x="300" y="474" font-size="14">基准球面</text>
+  <!-- 焦面：半径 R-0.466R（190px） -->
+  <path d="M 230 90 A 190 190 0 0 0 420 280 A 190 190 0 0 0 610 90" fill="none" stroke="#000" stroke-width="1.3" stroke-dasharray="6,4"/>
+  <text x="556" y="330" font-size="14">焦面</text>
+  <!-- 工作抛物面：与基准球面底部相切 -->
+  <path d="M 160 220 Q 420 455 680 220" fill="none" stroke="#00a" stroke-width="2.2"/>
+  <text x="628" y="272" font-size="14">工作抛物面</text>
+  <!-- 光轴 S-C-P 虚线 -->
+  <line x1="470" y1="6" x2="323" y2="253" stroke="#888" stroke-dasharray="5,4" stroke-width="1.2"/>
+  <text x="466" y="22" font-size="14">被观测体 S</text>
+  <!-- 馈源舱 P（焦点，位于焦面上） -->
+  <circle cx="323" cy="253" r="5" fill="#c00"/>
+  <text x="330" y="248" font-size="14" fill="#c00">P 馈源舱</text>
+  <!-- 照明区域 300m -->
+  <line x1="235" y1="320" x2="605" y2="320" stroke="#888" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="392" y="345" font-size="14">照明区域 300 m</text>
+  <!-- D=500m 底部尺寸线 -->
+  <line x1="60" y1="500" x2="780" y2="500" stroke="#000" stroke-width="1"/>
+  <line x1="60" y1="490" x2="60" y2="510" stroke="#000"/>
+  <line x1="780" y1="490" x2="780" y2="510" stroke="#000"/>
+  <text x="400" y="519" font-size="15">D = 500 m</text>
+  <!-- R=300m 与 F=0.466R 径向尺寸 -->
+  <line x1="420" y1="90" x2="150" y2="150" stroke="#000" stroke-width="1"/>
+  <text x="208" y="126" font-size="14">R = 300 m</text>
+  <line x1="238" y1="152" x2="262" y2="142" stroke="#000" stroke-width="0.9"/>
+  <text x="196" y="196" font-size="13">F = 0.466 R</text>
+</svg>
 
 将反射面调节为工作抛物面是主动反射面技术的关键，该过程通过下拉索与促动器配合来完成。下拉索长度固定。促动器沿基准球面径向安装，其底端固定在地面，顶端可沿基准球面径向伸缩来完成下拉索的调节，从而调节反射面板的位置，最终形成工作抛物面。
 
@@ -52,7 +253,35 @@ FAST由主动反射面、信号接收系统（馈源舱）以及相关的控制�
 
 8. 天体 S 的方位可用方位角 `α` 和仰角 `β` 来表示（见图5）。
 
-图5 天体S方位角与仰角示意图
+**图5　天体S方位角与仰角示意图**（三维直角坐标系，原点 C；仰角 β 为视线 CS 与水平面夹角，方位角 α 为 CS 在水平面的投影与 +x 轴夹角）
+
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 320" width="100%" style="max-width:420px;background:#fff">
+  <!-- 直角坐标系：原点 C，z 竖直向上，x 水平向右，y 斜向上 -->
+  <g stroke="#333" stroke-width="1.5">
+    <line x1="95" y1="262" x2="392" y2="262"/>
+    <line x1="95" y1="262" x2="272" y2="116"/>
+    <line x1="95" y1="262" x2="86" y2="46"/>
+  </g>
+  <g font-size="15" fill="#333" font-family="sans-serif">
+    <text x="396" y="282">x</text>
+    <text x="280" y="114">y</text>
+    <text x="66" y="42">z</text>
+    <text x="70" y="290">C</text>
+  </g>
+  <!-- 目标天体 S 与视线 CS -->
+  <circle cx="202" cy="96" r="4" fill="#000"/>
+  <text x="214" y="88" font-size="15">S</text>
+  <line x1="95" y1="262" x2="202" y2="96" stroke="#0000ff" stroke-width="2.4"/>
+  <!-- S 竖直投影线 与 水平投影线 CF（虚线） -->
+  <line x1="202" y1="96" x2="202" y2="238" stroke="#888" stroke-dasharray="5,4" stroke-width="1.2"/>
+  <line x1="95" y1="262" x2="202" y2="238" stroke="#888" stroke-dasharray="5,4" stroke-width="1.2"/>
+  <!-- 仰角 β（CS 与水平面投影夹角） -->
+  <path d="M 137.9 252.2 A 44 44 0 0 0 118.5 225.4" fill="none" stroke="#c00" stroke-width="1.4"/>
+  <text x="156" y="246" font-size="14" fill="#c00">β</text>
+  <!-- 方位角 α（+x 轴与水平投影 CF 夹角） -->
+  <path d="M 141 262 A 46 46 0 0 0 139.6 252" fill="none" stroke="#c00" stroke-width="1.4"/>
+  <text x="163" y="275" font-size="14" fill="#c00">α</text>
+</svg>
 
 ---
 
