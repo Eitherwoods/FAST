@@ -1,0 +1,164 @@
+% !TEX program = xelatex
+\documentclass[withoutpreface]{cumcmthesis}
+
+\usepackage{tikz}
+\usepackage{pythonhighlight}
+\usetikzlibrary{positioning, arrows.meta, calc, shapes.geometric}
+\captionsetup{font=small}
+\newtheorem{proposition}{命题}
+
+\title{这里是标题}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+这里是摘要
+\keywords{这里是关键词}
+\end{abstract}
+
+% ==================== 问题重述 ====================
+\section{问题重述}
+
+\subsection{问题背景}
+
+中国天眼——500米口径球面射电望远镜（Five-hundred-meter Aperture Spherical radio Telescope，简称FAST），是我国自主建造的目前世界上单口径最大、灵敏度最高的射电望远镜。其主动反射面由主索网、反射面板、下拉索与促动器等构成一个可调节球面：主索网按短程线三角网格布置并支承反射面板，每个主索节点经一根长度固定的下拉索与地表促动器相连，促动器沿基准球面径向伸缩即可牵引主索节点变位，从而改变反射面的整体形状。
+
+主动反射面有基准态与工作态两种状态：基准态为半径约$300\,\mathrm{m}$、口径$500\,\mathrm{m}$的球面（基准球面，球心记为$C$）；工作态则被调节为口径$300\,\mathrm{m}$的近似旋转抛物面（工作抛物面）。馈源舱接收平面中心只能在与基准球面同心、半径差为$F=0.466R$的焦面上移动，其有效接收区域为直径$1\,\mathrm{m}$的中心圆盘。当观测方向为天体目标$S$时，馈源舱中心移至直线$SC$与焦面的交点$P$，并通过调节部分反射面板形成以$SC$为对称轴、$P$为焦点的近似旋转抛物面，将平行入射的电磁波汇聚至馈源舱。本赛题的核心任务，即在此调节机制约束下确定理想抛物面，并通过调节促动器的径向伸缩量使反射面尽量贴近该理想抛物面，以获得最佳接收效果。
+
+\subsection{问题提出}
+
+根据上述背景及附录所给参数，本文需要建立模型解决以下三个问题：
+
+\textbf{问题一}：当待观测天体$S$位于基准球面正上方，即方位角$\alpha=0^{\circ}$、仰角$\beta=90^{\circ}$时，结合考虑反射面板调节因素，确定理想抛物面。
+
+\textbf{问题二}：当待观测天体$S$位于$\alpha=36.795^{\circ}$、$\beta=78.169^{\circ}$时，确定理想抛物面；建立反射面板调节模型，调节相关促动器的伸缩量，使反射面尽量贴近该理想抛物面。将理想抛物面的顶点坐标，以及调节后反射面$300\,\mathrm{m}$口径内的主索节点编号、位置坐标、各促动器的伸缩量等结果，按附件4规定的格式保存在\texttt{result.xlsx}文件中。
+
+\textbf{问题三}：基于第2问的反射面调节方案，计算调节后馈源舱的接收比，即馈源舱有效区域接收到的反射信号与$300\,\mathrm{m}$口径内反射面的反射信号之比，并与基准反射球面的接收比作比较。
+
+% ==================== 问题分析 ====================
+\section{问题分析}
+
+\subsection{问题一分析}
+
+
+\subsection{问题二分析}
+
+
+\subsection{问题三分析}
+
+
+% ==================== 问题假设 ====================
+\section{问题假设}
+
+\begin{description}
+\item[1. ] 
+\end{description}
+
+% ==================== 符号说明 ====================
+\section{符号说明}
+
+\begin{longtable}{c p{4.2cm} c | c p{4.2cm} c}
+\toprule
+符号 & 说明 & 单位 & 符号 & 说明 & 单位 \\
+\midrule
+\endfirsthead
+\toprule
+符号 & 说明 & 单位 & 符号 & 说明 & 单位 \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\bottomrule
+\endlastfoot
+$\mathcal{}$ &  $ $ &  &
+\end{longtable}
+
+% ==================== 问题一 ====================
+\section{ 问题一}
+
+\subsection{模型建立}
+
+\subsection{求解结果}
+
+问题一的求解结果如表~\ref{tab:q1_result} 所示。
+
+\begin{longtable}{lc}
+\caption{问题一求解结果} \label{tab:q1_result} \\
+\toprule
+指标 & 数值 \\
+\midrule
+\endfirsthead
+\toprule
+指标 & 数值 \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\bottomrule
+\endlastfoot
+
+\end{longtable}
+
+
+% ==================== 问题二 ====================
+\section{问题二}
+
+% ==================== 问题三 ====================
+\section{问题三}
+
+% ==================== 结果分析与检验 ====================
+\section{结果分析与检验}
+
+
+% ==================== 模型评价与推广 ====================
+\section{模型评价与推广}
+
+\subsection{模型优点}
+
+\begin{itemize}
+\item \textbf{}：
+\end{itemize}
+
+\subsection{模型不足}
+
+
+\subsection{模型推广}
+
+% ==================== AI工具使用说明 ====================
+\section{AI工具使用说明}
+
+本作品在撰写过程中使用了以下AI工具辅助完成部分工作：
+
+\begin{itemize}
+    \item \textbf{DeepSeek网页端}（DeepSeek-V4-Flash/Pro）：
+    \item \textbf{MiMo Code}（MiMo-v2.5-Pro）：
+    \item \textbf{TRAE}（字节跳动AI编程助手）：
+    \item \textbf{Codex}（OpenAI代码生成模型）：
+\end{itemize}
+
+\textbf{人工修改与质量保证}：
+
+% ==================== 参考文献 ====================
+\begin{thebibliography}{99}
+
+\end{thebibliography}
+
+% ==================== 附录 ====================
+\appendix
+\section{附录：核心代码}
+
+本节展示求解模型的核心代码。完整代码及数据文件详见随附电子材料。
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
