@@ -25,7 +25,7 @@
 
 中国天眼——500米口径球面射电望远镜（Five-hundred-meter Aperture Spherical radio Telescope，简称FAST），是我国自主建造的目前世界上单口径最大、灵敏度最高的射电望远镜。其主动反射面由主索网、反射面板、下拉索与促动器等构成一个可调节球面：主索网按短程线三角网格布置并支承反射面板，每个主索节点经一根长度固定的下拉索与地表促动器相连，促动器沿基准球面径向伸缩即可牵引主索节点变位，从而改变反射面的整体形状。
 
-主动反射面有基准态与工作态两种状态：基准态为半径约$300\,\mathrm{m}$、口径$500\,\mathrm{m}$的球面（基准球面，球心记为$C$）；工作态则被调节为口径$300\,\mathrm{m}$的近似旋转抛物面（工作抛物面）。馈源舱接收平面中心只能在与基准球面同心、半径差为$F=0.466R$的焦面上移动，其有效接收区域为直径$1\,\mathrm{m}$的中心圆盘。当观测方向为天体目标$S$时，馈源舱中心移至直线$SC$与焦面的交点$P$，并通过调节部分反射面板形成以$SC$为对称轴、$P$为焦点的近似旋转抛物面，将平行入射的电磁波汇聚至馈源舱。本赛题的核心任务，即在此调节机制约束下确定理想抛物面，并通过调节促动器的径向伸缩量使反射面尽量贴近该理想抛物面，以获得最佳接收效果。FAST观测时的剖面示意如图~\ref{fig:fast_profile}所示。
+主动反射面有基准态与工作态两种状态：基准态为半径约$300\,\mathrm{m}$、口径$500\,\mathrm{m}$的球面（基准球面，球心记为$C$）；工作态则被调节为口径$300\,\mathrm{m}$的近似旋转抛物面（工作抛物面）。馈源舱接收平面中心只能在与基准球面同心、半径差为$0.466R$的焦面上移动，其有效接收区域为直径$1\,\mathrm{m}$的中心圆盘。当观测方向为天体目标$S$时，馈源舱中心移至直线$SC$与焦面的交点$P$，并通过调节部分反射面板形成以$SC$为对称轴、$P$为焦点的近似旋转抛物面，将平行入射的电磁波汇聚至馈源舱。本赛题的核心任务，即在此调节机制约束下确定理想抛物面，并通过调节促动器的径向伸缩量使反射面尽量贴近该理想抛物面，以获得最佳接收效果。FAST观测时的剖面示意如图~\ref{fig:fast_profile}所示。
 
 \begin{figure}[htbp]
     \centering
@@ -48,19 +48,22 @@
 
 \subsection{问题一分析}
 
-问题一要求在天体$S$位于基准球面正上方（$\alpha=0^{\circ}$，$\beta=90^{\circ}$）时确定理想抛物面。此时视线$CS$沿$z$轴正方向，抛物面对称轴即$z$轴，馈源舱位于$z$轴上焦面与直线$SC$的交点处。解决此问题的关键步骤为：首先建立一般情形下馈源舱（焦点）的位置模型，由焦径比$F/R=0.466$确定焦面半径$R-F=0.534R$，结合天体方位确定焦点坐标；然后根据抛物面的几何定义——抛物面上任意一点到焦点的距离等于该点沿轴线方向到准线的距离——推导出理想抛物面的一般方程；最后代入$\alpha=0^{\circ}$、$\beta=90^{\circ}$的特殊条件，化简得到该情形下的具体抛物面方程及其顶点坐标。
+问题一要求在天体$S$位于基准球面正上方（$\alpha=0^{\circ}$，$\beta=90^{\circ}$）时确定理想抛物面。此时视线$CS$沿$z$轴正方向，抛物面对称轴即$z$轴，馈源舱位于$z$轴上焦面与直线$SC$的交点处。解决此问题的关键步骤为：首先建立一般情形下馈源舱（焦点）的位置模型，由焦面与基准球面半径差$0.466R$确定焦面半径$0.534R$，结合天体方位确定焦点坐标；然后根据抛物面的几何定义——抛物面上任意一点到焦点的距离等于该点沿轴线方向到准线的距离——推导出以焦距$p$为参数的理想抛物面一般方程；接着建立以焦距$p$为决策变量、节点伸缩量平方和最小为目标的优化模型，在促动器伸缩量与索长变化约束下求解最优焦距$p^*$；最后代入$\alpha=0^{\circ}$、$\beta=90^{\circ}$的特殊条件，化简得到该情形下的具体抛物面方程。
 
 \subsection{问题二分析}
 
+问题二要求在$\alpha=36.795^{\circ}$、$\beta=78.169^{\circ}$时确定理想抛物面，并建立反射面板调节模型。首先将方位角与仰角代入问题一的一般方程，由优化模型求解最优焦距$p^*$，得到该情形下的理想抛物面；然后建立反射面板调节模型，分别从节点拟合优度、反射面板中心拟合优度、整个面板拟合优度三个层面提出调节方案，在促动器伸缩量与索长变化约束下，使调节后反射面尽量贴近理想抛物面。
 
 \subsection{问题三分析}
+
+问题三要求基于问题二的反射面调节方案，计算馈源舱的接收比。接收比定义为馈源舱有效区域接收到的反射信号与$300\,\mathrm{m}$口径内反射面反射信号之比。解决此问题的关键步骤为：首先由调节后各反射面板的球心确定镜面上任一点的精确法向；然后根据矢量反射定律建立反射光落点与接收圆盘的判据；最后以投影面积加权，分别计算被接收面积与总面积，得到接收比，并与基准反射球面的接收比作比较。
 
 
 % ==================== 问题假设 ====================
 \section{问题假设}
 
 \begin{description}
-\item[1. 面板与节点] 反射面板为理想刚性无孔平面，其顶点即主索节点，形状由三个节点决定。
+\item[1. 面板与节点] 反射面板为理想刚性球面片，是半径$R$的基准球面的一部分，其顶点即主索节点，形状由三个节点决定。
 \item[2. 直线传播] 电磁波及反射信号沿直线传播。
 \item[3. 调节约束] 基准态下节点位于球面上；促动器沿径向伸缩$\pm0.6\,\mathrm{m}$，调节后索长近似不变（间距变化$\leq0.07\%$）。
 \end{description}
@@ -81,13 +84,19 @@
 \endfoot
 \bottomrule
 \endlastfoot
-$R$ & 基准球面半径（$\approx300$） & $\mathrm{m}$ & $F$ & 焦距，$F=0.466R$ & $\mathrm{m}$ \\
+$R$ & 基准球面半径（$\approx300$） & $\mathrm{m}$ & $p$ & 抛物面焦距（决策变量） & $\mathrm{m}$ \\
 $C$ & 基准球面球心（坐标原点） & --- & $D$ & 基准球面口径（$500$） & $\mathrm{m}$ \\
 $\alpha$ & 天体方位角 & $^{\circ}$ & $\beta$ & 天体仰角 & $^{\circ}$ \\
-$\mathbf{n}$ & 抛物面轴线方向向量 & --- & $F/R$ & 焦径比（$0.466$） & --- \\
-$Q$ & 馈源舱（抛物面焦点） & --- & $\vec{OQ}$ & 馈源舱位置向量 & $\mathrm{m}$ \\
+$\mathbf{n}$ & 抛物面轴线方向向量 & --- & $0.466R$ & 焦面与基准球面半径差 & $\mathrm{m}$ \\
+$P$ & 馈源舱（抛物面焦点） & --- & $\overrightarrow{CP}$ & 馈源舱位置向量 & $\mathrm{m}$ \\
 $M(x,y,z)$ & 抛物面上任意一点 & $\mathrm{m}$ & $V$ & 抛物面顶点 & --- \\
 $a,b,c$ & 轴向量$\mathbf{n}$的分量 & --- & $S$ & 待观测天体目标 & --- \\
+$p^*$ & 最优焦距 & $\mathrm{m}$ & $\delta_i$ & 主索节点$i$的伸缩量 & $\mathrm{m}$ \\
+$\mathbf{e}_i$ & 节点$i$径向单位向量 & --- & $\Delta_k$ & 第$k$块面板中心径向偏差 & $\mathrm{m}$ \\
+$\mathbf{O}_k$ & 第$k$块面板球心 & --- & $\mathbf{G}_k$ & 第$k$块面板中心点 & $\mathrm{m}$ \\
+$N(M)$ & $M$处法向单位向量 & --- & $Q$ & 反射光落点 & $\mathrm{m}$ \\
+$x_f(M)$ & 反射点横向偏移 & $\mathrm{m}$ & $\eta$ & 接收比 & --- \\
+$A_{\mathrm{rec}}$ & 被接收投影面积 & $\mathrm{m}^2$ & $A_{\mathrm{total}}$ & 总投影面积 & $\mathrm{m}^2$ \\
 \end{longtable}
 
 % ==================== 问题一 ====================
@@ -95,44 +104,68 @@ $a,b,c$ & 轴向量$\mathbf{n}$的分量 & --- & $S$ & 待观测天体目标 & -
 
 \subsection{模型建立}
 
-\subsubsection{馈源舱（焦点）位置模型}
+\subsubsection{轴线与焦点}
 
-设抛物面轴线方向向量为$\mathbf{n}$。由题意，天体$S$的方位由方位角$\alpha$与仰角$\beta$确定，视线$CS$的方向即$\mathbf{n}$，故：
+设基准球面半径为$R$，球心为$C$，取坐标原点为$C$。天体方位角为$\alpha$、仰角为$\beta$，观测轴线单位向量取
 \begin{equation}
-\mathbf{n} = (\cos\beta\cos\alpha,\;\cos\beta\sin\alpha,\;\sin\beta)
+\mathbf{n}=(\cos\beta\cos\alpha,\;\cos\beta\sin\alpha,\;\sin\beta)
 \end{equation}
 
-记$a=\cos\beta\cos\alpha$，$b=\cos\beta\sin\alpha$，$c=\sin\beta$，则$\mathbf{n}=(a,b,c)$，且$a^{2}+b^{2}+c^{2}=1$。
-
-馈源舱$Q$为抛物面的焦点，位于抛物面轴线上。由题目条件，馈源舱接收平面中心在与基准球面同心的焦面上移动，焦面半径为$R-F=R-0.466R=0.534R$。当观测方向为$\mathbf{n}$时，直线$SC$过球心$C$（即坐标原点$O$），馈源舱位于该直线与焦面在反射面一侧的交点，即在$-\mathbf{n}$方向上距$O$为$0.534R$处，故：
+馈源舱（焦点）为$P$，位于焦面上。焦面与基准球面同心，半径差为$0.466R$，故焦点位置矢量为
 \begin{equation}
-\vec{OQ} = -0.534R\,\mathbf{n}
+\overrightarrow{CP}=-(R-0.466R)\,\mathbf{n}=-0.534R\,\mathbf{n}
 \end{equation}
 
-即焦点$Q$的坐标为：
+即焦点$P$到球心$C$的距离恒为$0.534R$，仅沿轴$\mathbf{n}$方向变化。
+
+\subsubsection{抛物面方程}
+
+设抛物面顶点为$V$，焦距为$p$。焦点$P$固定，顶点在轴上位于焦点沿$-\mathbf{n}$方向、距焦点$p$处：
 \begin{equation}
-Q = (-0.534Ra,\;-0.534Rb,\;-0.534Rc)
+V=P-p\,\mathbf{n}
 \end{equation}
 
-\subsubsection{理想抛物面模型}
-
-由抛物面的几何定义，抛物面上任意一点到焦点的距离等于该点到准线的距离。对于以$Q$为焦点、$\mathbf{n}$为轴线方向、焦距为$F$的旋转抛物面，其顶点位于$Q$沿$-\mathbf{n}$方向距离$F$处，准线为过$Q-2F\mathbf{n}$且法向量为$\mathbf{n}$的平面。设抛物面上任意一点为$M(x,y,z)$，则其到准线平面的距离为$(\vec{OM}-\vec{OQ})\cdot\mathbf{n}+2F$，由定义得：
+反射面上任一点$M(x,y,z)$，由抛物面的定义（到焦点的距离等于到准线的距离）：
 \begin{equation}
-\left|\vec{OM}-\vec{OQ}\right| = (\vec{OM}-\vec{OQ})\cdot\mathbf{n} + 2F
+\left|\mathbf{CM}-\mathbf{CP}\right|=\left(\mathbf{CM}-\mathbf{CP}\right)\cdot\mathbf{n}+2p
 \end{equation}
 
-将$\vec{OM}=(x,y,z)$、$\vec{OQ}=-0.534R\,\mathbf{n}$代入，利用$a^{2}+b^{2}+c^{2}=1$计算右端点积：
-\begin{equation*}
-(\vec{OM}-\vec{OQ})\cdot\mathbf{n} = ax+by+cz+0.534R
-\end{equation*}
+代入$\mathbf{CM}=(x,y,z)$，$\mathbf{CP}=-0.534R\,\mathbf{n}$，有
+\begin{equation}
+\left(\mathbf{CM}-\mathbf{CP}\right)\cdot\mathbf{n}=ax+by+cz+0.534R\left(a^{2}+b^{2}+c^{2}\right)
+\end{equation}
 
-对式~(4)两边平方，得理想抛物面方程：
-\begin{multline}
-(x+0.534Ra)^{2} + (y+0.534Rb)^{2} + (z+0.534Rc)^{2} \\
-= (ax+by+cz+0.534R+2F)^{2}
-\end{multline}
+因$a^{2}+b^{2}+c^{2}=\cos^{2}\beta\left(\cos^{2}\alpha+\sin^{2}\alpha\right)+\sin^{2}\beta=1$，得
+\begin{equation}\label{eq:paraboloid}
+(x+0.534Ra)^{2}+(y+0.534Rb)^{2}+(z+0.534Rc)^{2}=(ax+by+cz+0.534R+2p)^{2}
+\end{equation}
 
-其中$F=0.466R$为焦距。式~(5)即为一般情形下理想抛物面的方程。
+其中
+\begin{equation}
+a=\cos\beta\cos\alpha,\qquad b=\cos\beta\sin\alpha,\qquad c=\sin\beta
+\end{equation}
+
+式~\eqref{eq:paraboloid}即为一般情形下理想抛物面的方程，其中焦距$p$为待定参数。
+
+\subsubsection{约束下的理想抛物面求解优化模型}
+
+决策变量为焦距$p$。对口径内每个主索节点$i$，沿其径向方向与理想抛物面求交，得到理想位置到基准球面的径向距离差，即伸缩量$\delta_i(p)$。
+
+目标函数为节点伸缩量的平方和最小：
+\begin{equation}
+\min_{p}\ \ \sum_{i=1}^{N}\delta_i^{2}(p)
+\end{equation}
+
+约束条件：
+\begin{equation}
+|\delta_i(p)|\le 0.6,\qquad i=1,\dots,N
+\end{equation}
+
+\begin{equation}
+\left|\,\left|\,P_i'-P_{i+1}'\,\right|-\left|\,P_i-P_{i+1}\,\right|\,\right|\le 0.07\%\,\left|\,P_i-P_{i+1}\,\right|
+\end{equation}
+
+其中$P_i$为节点$i$的基准位置，$P_i'=P_i+\delta_i\,\mathbf{e}_i$，$\mathbf{e}_i$为原点（球心$C$）指向节点$i$的径向单位向量。
 
 \subsection{求解过程}
 
@@ -143,39 +176,28 @@ b = \cos 90^{\circ}\sin 0^{\circ} = 0,\quad
 c = \sin 90^{\circ} = 1
 \end{equation}
 
-即轴线方向为$\mathbf{n}=(0,0,1)$，抛物面以$z$轴为对称轴。将上述分量代入抛物面方程~(5)：
+即轴线方向为$\mathbf{n}=(0,0,1)$，抛物面以$z$轴为对称轴。将上述分量代入抛物面方程~\eqref{eq:paraboloid}：
 \begin{equation}
-x^{2}+y^{2}+(z+0.534R)^{2} = (z+0.534R+2F)^{2}
+x^{2}+y^{2}+(z+0.534R)^{2} = (z+0.534R+2p)^{2}
 \end{equation}
 
-记$u=z+0.534R$，则上式化为：
+展开右端并化简，记$u=z+0.534R$，则：
 \begin{equation}
-x^{2}+y^{2}+u^{2} = (u+2F)^{2}
+x^{2}+y^{2}+u^{2} = u^{2}+4pu+4p^{2}
 \end{equation}
 
-展开右端：
 \begin{equation}
-x^{2}+y^{2}+u^{2} = u^{2}+4Fu+4F^{2}
+x^{2}+y^{2} = 4p(u+p) = 4p(z+0.534R+p)
 \end{equation}
 
-化简得：
+其中焦距$p$为决策变量，由优化模型在伸缩量与索长变化约束下求解确定，记最优焦距为$p^*$。代入$R=300\,\mathrm{m}$，抛物面方程为：
 \begin{equation}
-x^{2}+y^{2} = 4Fu+4F^{2} = 4F(u+F) = 4F(z+0.534R+F)
-\end{equation}
-
-将$F=0.466R$代入$0.534R+F=0.534R+0.466R=R$，故：
-\begin{equation}
-\boxed{x^{2}+y^{2} = 4F(z+R)}
+\boxed{x^{2}+y^{2} = 4p^*\,(z+160.2+p^*)}
 \end{equation}
 
 此即问题一的理想抛物面方程，是以$z$轴为对称轴、开口向$z$正方向的旋转抛物面。
 
-抛物面顶点坐标为$V(0,\,0,\,-R)$，即$(0,\,0,\,-300)$，恰与基准球面的最低点（南极）重合。焦点（馈源舱）$Q$位于$z$轴上距原点$0.534R$处，坐标为$(0,\,0,\,-0.534R)$，即$(0,\,0,\,-160.2)$。
-
-代入$R=300\,\mathrm{m}$，$F=0.466\times300=139.8\,\mathrm{m}$，抛物面方程为：
-\begin{equation}
-x^{2}+y^{2} = 559.2\,(z+300)
-\end{equation}
+抛物面顶点坐标为$V(0,\,0,\,-0.534R-p^*)$。焦点（馈源舱）$P$位于$z$轴上距球心$C$为$0.534R$处，坐标为$(0,\,0,\,-0.534R)$，即$(0,\,0,\,-160.2)$。
 
 \subsection{求解结果}
 
@@ -195,26 +217,202 @@ x^{2}+y^{2} = 559.2\,(z+300)
 \endfoot
 \bottomrule
 \endlastfoot
-理想抛物面方程 & $x^{2}+y^{2}=4F(z+R)$ \\
-代入$R=300\,\mathrm{m}$的方程 & $x^{2}+y^{2}=559.2\,(z+300)$ \\
-抛物面顶点坐标$V$ & $(0,\,0,\,-300)\,\mathrm{m}$ \\
-馈源舱（焦点）坐标$Q$ & $(0,\,0,\,-160.2)\,\mathrm{m}$ \\
-焦距$F$ & $139.8\,\mathrm{m}$ \\
+理想抛物面方程 & $x^{2}+y^{2}=4p(z+0.534R+p)$ \\
+最优焦距$p^*$ & 由优化模型求解确定 \\
+抛物面顶点坐标$V$ & $(0,\,0,\,-0.534R-p^*)\,\mathrm{m}$ \\
+馈源舱（焦点）坐标$P$ & $(0,\,0,\,-160.2)\,\mathrm{m}$ \\
 \end{longtable}
 
 
 % ==================== 问题二 ====================
-\section{问题二}
+\section{问题二：反射面板调节模型}
+
+\subsection{理想抛物面的确定}
+
+当待观测天体$S$位于$\alpha=36.795^{\circ}$、$\beta=78.169^{\circ}$时，代入方向向量得
+\begin{equation}
+a=\cos\beta\cos\alpha,\quad b=\cos\beta\sin\alpha,\quad c=\sin\beta
+\end{equation}
+
+将上述分量代入理想抛物面方程~\eqref{eq:paraboloid}，得到该情形下的抛物面方程。焦距$p$仍为决策变量，由优化模型（目标函数$\min_{p}\sum_{i}\delta_i^{2}(p)$，约束$|\delta_i(p)|\le 0.6$及索长变化约束）求解确定最优焦距$p^*$，进而得到该情形下理想抛物面的顶点坐标与具体方程。
+
+\subsection{反射面板调节模型}
+
+理想抛物面确定后，需调节各主索节点的径向伸缩量，使反射面尽量贴近该理想抛物面。本节提出三种调节方案，分别从不同层面度量``贴近''程度。
+
+\subsubsection{方案一：仅考虑节点拟合优度}
+
+理想抛物面确定后，各节点的理想伸缩量即为其径向方向与理想抛物面交点半径与基准球面半径之差：
+\begin{equation}
+\delta_i = \hat{r}_i - R
+\end{equation}
+
+其中$\hat{r}_i$为节点$i$的径向方向与理想抛物面交点距球心$C$的距离。直接相减即可得到各节点伸缩量，无需额外优化。
+
+\subsubsection{方案二：考虑反射面板中心的拟合优度}
+
+\paragraph{（1）反射面板球面中心的坐标确认。}
+输入反射面板三个顶点\textbf{当前}坐标$\mathbf{A},\mathbf{B},\mathbf{D}$，输出该面板所在球面的球心$\mathbf{O}_k$及其在球面上的中心点$\mathbf{G}$。函数记为$G=\mathrm{center}(\mathbf{A},\mathbf{B},\mathbf{D})$。
+
+反射面板为刚体，是半径为$R$的球面的一部分。调节后三顶点不再以原点为球心，需先由三顶点反演出球心$\mathbf{O}_k$，推导如下。
+
+三点共面，记平面法向单位向量为
+\begin{equation}
+\mathbf{n}_p=\frac{(\mathbf{B}-\mathbf{A})\times(\mathbf{D}-\mathbf{A})}{\left|(\mathbf{B}-\mathbf{A})\times(\mathbf{D}-\mathbf{A})\right|}
+\end{equation}
+
+平面上到三顶点等距的点为外接圆心$P_0$。由等距关系得
+\begin{equation}
+|P_0-\mathbf{A}|=|P_0-\mathbf{B}|,\qquad |P_0-\mathbf{A}|=|P_0-\mathbf{D}|
+\end{equation}
+
+两边平方展开，消去公共项$|P_0|^{2}$，得到关于$P_0$的线性方程：
+\begin{equation}
+2\,P_0\cdot(\mathbf{B}-\mathbf{A})=|\mathbf{B}|^{2}-|\mathbf{A}|^{2}
+\end{equation}
+\begin{equation}
+2\,P_0\cdot(\mathbf{D}-\mathbf{A})=|\mathbf{D}|^{2}-|\mathbf{A}|^{2}
+\end{equation}
+
+令$\mathbf{u}=\mathbf{B}-\mathbf{A}$，$\mathbf{v}=\mathbf{D}-\mathbf{A}$。因$P_0$在三点确定的平面内，可设$P_0=\mathbf{A}+\alpha\,\mathbf{u}+\beta\,\mathbf{v}$。代入上述线性方程，整理为关于$\alpha,\beta$的方程组，记
+\begin{equation}
+R_1=|\mathbf{B}|^{2}-|\mathbf{A}|^{2}-2\,\mathbf{A}\cdot\mathbf{u},\qquad R_2=|\mathbf{D}|^{2}-|\mathbf{A}|^{2}-2\,\mathbf{A}\cdot\mathbf{v}
+\end{equation}
+\begin{equation}
+2\alpha|\mathbf{u}|^{2}+2\beta\,(\mathbf{u}\cdot\mathbf{v})=R_1,\qquad 2\alpha\,(\mathbf{u}\cdot\mathbf{v})+2\beta|\mathbf{v}|^{2}=R_2
+\end{equation}
+
+系数行列式为
+\begin{equation}
+D_0=4\left(|\mathbf{u}|^{2}|\mathbf{v}|^{2}-(\mathbf{u}\cdot\mathbf{v})^{2}\right)
+\end{equation}
+
+由克莱姆法则：
+\begin{equation}
+\alpha=\frac{2\left(R_1|\mathbf{v}|^{2}-R_2\,(\mathbf{u}\cdot\mathbf{v})\right)}{D_0},\qquad \beta=\frac{2\left(|\mathbf{u}|^{2}R_2-(\mathbf{u}\cdot\mathbf{v})R_1\right)}{D_0}
+\end{equation}
+
+代回$P_0=\mathbf{A}+\alpha\,\mathbf{u}+\beta\,\mathbf{v}$即得外接圆心。设$r_0=|P_0-\mathbf{A}|$，则球心沿法向偏移：
+\begin{equation}
+\mathbf{O}_k=P_0+t\,\mathbf{n}_p,\qquad t=\operatorname{sgn}\!\left(\,(\mathbf{C}-P_0)\cdot\mathbf{n}_p\,\right)\sqrt{R^{2}-r_0^{2}}
+\end{equation}
+
+其中$\mathbf{n}_p$是平面单位法向量。基准态时面板凹侧朝原点（此时$\mathbf{O}_k$即原点），故调节后球心应仍在面板凹侧，即$\mathbf{O}_k$与原点$\mathbf{C}$位于$P_0$的同一侧，故$t$的符号由$\mathbf{C}-P_0$在$\mathbf{n}_p$上的投影符号决定；若该投影为$0$（基准态退化情形），取$t$为正即可。这样$\mathbf{O}_k$唯一确定且位于原点同侧。
+
+取三顶点相对$\mathbf{O}_k$的平均方向并投影到球面，得面板中心点：
+\begin{equation}
+\mathbf{G}=\mathbf{O}_k+R\cdot\frac{\mathbf{A}+\mathbf{B}+\mathbf{D}-3\,\mathbf{O}_k}{\left|\mathbf{A}+\mathbf{B}+\mathbf{D}-3\,\mathbf{O}_k\right|}
+\end{equation}
+
+$\mathbf{G}$即面板在球面上的中心点，满足$|\mathbf{O}_k\mathbf{G}|=R$。
+
+\paragraph{（2）反射面板调节优化模型。}
+决策变量为$300\,\mathrm{m}$口径内各主索节点的伸缩量$\delta_i$。
+
+约束条件与前述相同：
+\begin{equation}
+|\delta_i|\le 0.6
+\end{equation}
+\begin{equation}
+\left|\,\left|\,P_i'-P_{i+1}'\,\right|-\left|\,P_i-P_{i+1}\,\right|\,\right|\le 0.07\%\,\left|\,P_i-P_{i+1}\,\right|
+\end{equation}
+
+目标函数为节点距理想位置的偏差与反射面板中心距理想位置的偏差的平方和最小化：
+\begin{equation}
+\min\ \ \sum_{i}\delta_i^{2}+\sum_{k}\Delta_k^{2}
+\end{equation}
+
+其中$\delta_i$为主索节点到理想抛物面的径向偏差，$\Delta_k$为第$k$块反射面板中心沿基准球面径向到理想抛物面的偏差，即由$\mathrm{center}(\mathbf{A}_k,\mathbf{B}_k,\mathbf{D}_k)$得该面板中心$\mathbf{G}_k$后，再取其径向偏差。
+
+\subsubsection{方案三：考虑整个面板的拟合优度}
+
+决策变量与约束同前，目标函数变为各反射面板在基准球面径向上与理想抛物面的偏差函数的平方，在基准球面上积分，再对各个面板求和并最小化：
+\begin{equation}
+\min\ \ \sum_{k}\int_{S_k}\left[\delta\!\left(\mathbf{r}\right)\right]^{2}\,\mathrm{d}S
+\end{equation}
+
+其中$S_k$为第$k$块反射面板在基准球面上的区域，$\delta(\mathbf{r})$为该处沿基准球面径向与理想抛物面的偏差函数。
+
+\subsubsection{方案选择}
+
+对三种方案都予以实验、比较，综合可行性与精度进行选择。方案三涉及曲面积分，可能难以解析计算或耗时过长；若其不可行，则退而采用方案二或方案一。
 
 % ==================== 问题三 ====================
-\section{问题三}
+\section{问题三：接收比计算模型}
+
+调节后的反射面由许多块刚性的三角形球面片拼接而成，每块都是半径$R$的基准球面的一部分。设第$k$块面板的球心为$\mathbf{O}_k$，则镜面上任一点$M$的\textbf{精确法向}为
+\begin{equation}
+N(M)=\frac{M-\mathbf{O}_k}{R}
+\end{equation}
+
+\subsection{接收判据}
+
+设观测轴线单位向量为$\mathbf{n}$（指向天体$S$），焦点（馈源舱）为$P$，接收平面是过$P$且垂直于$\mathbf{n}$的平面。来自天体的入射平行光沿方向$d=-\mathbf{n}$传播。
+
+在反射点$M$处，由矢量反射定律，反射方向为
+\begin{equation}
+\mathbf{r}=d-2\,(d\cdot N)\,N=-\mathbf{n}+2\,(\mathbf{n}\cdot N)\,N
+\end{equation}
+
+反射线参数化为$X(t)=M+t\,\mathbf{r}$。它与接收平面（该平面上任一点$X$满足$(X-P)\cdot\mathbf{n}=0$）的交点$Q$由下式确定：
+\begin{equation}
+t=\frac{(P-M)\cdot\mathbf{n}}{\mathbf{r}\cdot\mathbf{n}},\qquad Q=M+t\,\mathbf{r}
+\end{equation}
+
+馈源舱有效接收区域是以$P$为圆心、直径$1\,\mathrm{m}$的圆盘，即半径$r_d=0.5\,\mathrm{m}$。定义反射点$M$的横向偏移（反射光落点$Q$相对圆盘中心$P$的距离）
+\begin{equation}
+x_f(M)=|Q-P|
+\end{equation}
+
+则点$M$的反射光被接收，当且仅当其落点落在该圆盘内：
+\begin{equation}
+x_f(M)=|Q-P|\le 0.5
+\end{equation}
+
+\textbf{验证}：若$M$恰在理想抛物面上，其反射线全部经过焦点$P$，于是$Q=P$，$x_f(M)=0\le 0.5$，即理想抛物面处处被接收。故$x_f(M)$正是度量调节后表面相对理想抛物面``失焦''程度的指标。
+
+\subsection{被接收面积计算}
+
+设平行光强度为$I$。镜面上面积元$\mathrm{d}S$（法向$N$）承接到的功率为$I\,|N\cdot\mathbf{n}|\,\mathrm{d}S$，即$\mathrm{d}S$在垂直于光束平面上的投影面积乘以$I$。故在接收比中强度$I$可约去，只需用\textbf{投影面积}计权。
+
+记满足$x_f(M)\le 0.5$的面元集合为被接收区域。$300\,\mathrm{m}$口径内被接收面元的总投影面积（分子）为
+\begin{equation}
+A_{\text{rec}}=\sum_{k}\int_{S_k\cap\{\,x_f(M)\le 0.5\,\}}|N(M)\cdot\mathbf{n}|\,\mathrm{d}S=\sum_{k}\int_{S_k\cap\{\,|Q-P|\le 0.5\,\}}\frac{|(M-\mathbf{O}_k)\cdot\mathbf{n}|}{R}\,\mathrm{d}S
+\end{equation}
+
+\subsection{接收比计算}
+
+分母为$300\,\mathrm{m}$口径内全部反射面元的总投影面积
+\begin{equation}
+A_{\text{total}}=\sum_{k}\int_{S_k}|N(M)\cdot\mathbf{n}|\,\mathrm{d}S
+\end{equation}
+
+当面板拼满$300\,\mathrm{m}$口径（该口径为垂直于$\mathbf{n}$、直径$300\,\mathrm{m}$、半径$150\,\mathrm{m}$的圆盘）且无明显缝隙时，各面板投影面积之和恰为该口径圆面积
+\begin{equation}
+A_{\text{total}}=\pi\cdot 150^{2}
+\end{equation}
+
+于是接收比定义为
+\begin{equation}\label{eq:eta}
+\eta=\frac{A_{\text{rec}}}{A_{\text{total}}}=\frac{\displaystyle\sum_{k}\int_{S_k\cap\{\,|Q-P|\le 0.5\,\}}\frac{|(M-\mathbf{O}_k)\cdot\mathbf{n}|}{R}\,\mathrm{d}S}{\displaystyle\sum_{k}\int_{S_k}\frac{|(M-\mathbf{O}_k)\cdot\mathbf{n}|}{R}\,\mathrm{d}S}
+\end{equation}
+
+分子分母均以投影面积加权，量纲一致。$\eta$即馈源舱有效区域接收到的反射信号与$300\,\mathrm{m}$口径内反射面的反射信号之比（能量份额），对基准反射球面做同样计算即可两相比较。
 
 % ==================== 结果分析与检验 ====================
 \section{结果分析与检验}
 
 \subsection{问题一结果检验}
 
-经验证：焦点$Q(0,\,0,\,-0.534R)$到原点距离为$0.534R=R-F$，位于焦面上；顶点$V(0,\,0,\,-R)$满足基准球面方程$x^{2}+y^{2}+z^{2}=R^{2}$，且两曲面在顶点处切平面均为$z=-R$，故相切；顶点到焦点距离$0.466R=F$，焦距一致。偏离度$\Delta=(z+0.864R)(z+R)$在顶点处为零，$300\,\mathrm{m}$口径内偏离量很小。
+经验证：焦点$P(0,\,0,\,-0.534R)$到球心$C$距离为$0.534R$，位于焦面上；顶点$V(0,\,0,\,-0.534R-p^*)$到焦点$P$的距离为$p^*$，焦距一致；最优焦距$p^*$由优化模型在伸缩量与索长变化约束下求得，使节点伸缩量平方和最小。
+
+\subsection{问题二结果检验}
+
+对三种调节方案的结果进行比较：方案一仅考虑节点拟合，计算最为简便但未顾及面板整体形貌；方案二在节点偏差基础上加入面板中心偏差，拟合精度更高；方案三以曲面积分度量整体偏差，理论最优但计算复杂度最高。综合可行性与精度选择最终方案。调节后各节点伸缩量须满足$|\delta_i|\le 0.6\,\mathrm{m}$约束，相邻索长变化不超过$0.07\%$，以验证调节方案的可行性。
+
+\subsection{问题三结果检验}
+
+接收比$\eta$的分子分母均以投影面积加权，量纲一致。当反射面为理想抛物面时，所有反射光均经过焦点$P$，接收比理论值为$1$；调节后反射面偏离理想抛物面，接收比降低。将调节后反射面的接收比与基准反射球面的接收比作比较，可验证调节方案的有效性。
 
 
 % ==================== 模型评价与推广 ====================
@@ -223,20 +421,24 @@ x^{2}+y^{2} = 559.2\,(z+300)
 \subsection{模型优点}
 
 \begin{itemize}
-\item \textbf{推导严格}：基于抛物面几何定义建立，结果为精确解析解；焦距$F=0.466R$由焦径比直接确定，无需额外参数。
-\item \textbf{调节量最小}：理想抛物面在顶点处与基准球面相切，使径向位移量最小化。
+\item \textbf{推导严格}：基于抛物面几何定义建立一般方程，焦距$p$由优化模型在约束下求解确定，使节点伸缩量平方和最小。
+\item \textbf{约束完整}：同时考虑促动器伸缩量上限（$\le0.6\,\mathrm{m}$）与索长变化上限（$\le0.07\%$），保证调节方案可行。
+\item \textbf{多方案比较}：提出三种调节方案，从节点、面板中心、整体面板三个层面度量拟合优度，综合可行性与精度择优。
+\item \textbf{物理精确}：接收比模型基于矢量反射定律与投影面积加权，物理意义明确，理想抛物面接收比理论值为$1$。
 \end{itemize}
 
 \subsection{模型不足}
 
 \begin{itemize}
-\item 理想抛物面为连续光滑曲面，实际反射面由离散三角面板构成；且未显式考虑促动器伸缩范围约束。
+\item 理想抛物面为连续光滑曲面，实际反射面由离散三角面板构成。
+\item 方案三涉及曲面积分，可能难以解析计算或耗时过长。
 \end{itemize}
 
 \subsection{模型推广}
 
 \begin{itemize}
-\item 一般方程（式~(5)）适用于任意方位角$\alpha$与仰角$\beta$，可作为问题二理想抛物面确定与调节模型的基础。
+\item 一般方程（式~\eqref{eq:paraboloid}）适用于任意方位角$\alpha$与仰角$\beta$，可用于不同观测方向下的理想抛物面确定。
+\item 接收比模型（式~\eqref{eq:eta}）可推广至其他大口径射电望远镜的接收效率评估。
 \end{itemize}
 
 % ==================== AI工具使用说明 ====================
