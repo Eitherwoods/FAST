@@ -19,7 +19,7 @@
 *.bak
 *.swp
 
-# 项目中间文件
+# 项目中间文件 理论上不用再写但是我们还是多写一遍
 body/main.log
 body/main.aux
 body/main.out
@@ -27,6 +27,7 @@ body/main.pdf
 body/main.synctex.gz
 body/main.blg
 body/main.bbl
+body/main.xdv
 body/main.synctex(busy)
 body/AI_declaration.pdf
 
