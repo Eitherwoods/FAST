@@ -7,8 +7,8 @@
 
 三方案均在 |x_i|≤0.6 与相邻节点间距变化 ≤0.07% 约束下求解。
 方案一用 common.fit_best（罚函数解为初值 + 多起点坐标下降），与第2问提交的
-result.xlsx 完全一致；方案二、三以方案一的解为初值继续坐标下降。
-外层以焦距 p 为决策变量（嵌套联合优化，粗扫+细扫）。
+result.xlsx 完全一致；外层 p 搜索也与 common.solve_adjustment 相同（minimize_scalar,
+xatol=1e-4），三方案的 p* 与 result.xlsx 严格同源。方案二、三以方案一的解为初值继续坐标下降。
 """
 import sys
 import time
@@ -251,34 +251,30 @@ def evaluate(pos, ctx, x, e_ap, p, sample_m=8):
 
 # ---------- 外层 p 优化 ----------
 
-def optimize_p(pos, ctx, solve_func, p_center=140.42, p_half=0.5, p_step=0.1,
+def optimize_p(pos, ctx, solve_func, p_bounds=cm.P_BOUNDS, xatol=1e-4,
                verbose=True):
-    """外层 p 优化：粗扫 + 细扫，目标为节点 RMS。"""
-    # 粗扫
-    ps = np.arange(p_center - p_half, p_center + p_half + p_step / 2, p_step)
-    best = (1e9, None, None, None)
-    for p in ps:
-        x, e_ap = solve_func(pos, ctx, p)
-        rms = float(np.sqrt(np.mean((x - e_ap) ** 2)))
-        if verbose:
-            print(f"    p={p:.4f}: node_RMS={rms:.6f}")
-        if rms < best[0]:
-            best = (rms, p, x, e_ap)
+    """外层 p 优化：与 common.solve_adjustment 相同的 minimize_scalar 流程。
 
-    # 细扫
-    p0 = best[1]
-    p_fine = np.arange(p0 - p_step, p0 + p_step + p_step / 10, p_step / 5)
-    for p in p_fine:
-        if abs(p - p0) < 1e-9:
-            continue
-        x, e_ap = solve_func(pos, ctx, p)
-        rms = float(np.sqrt(np.mean((x - e_ap) ** 2)))
-        if verbose:
-            print(f"    p={p:.4f}: node_RMS={rms:.6f}")
-        if rms < best[0]:
-            best = (rms, p, x, e_ap)
+    保证三方案的 p* 与第 2 问 result.xlsx 由同一搜索方式确定（同一确定性目标）。
+    """
+    cache = {}
 
-    return best  # (rms, p, x, e_ap)
+    def fit_rms(p):
+        key = round(float(p), 6)
+        if key not in cache:
+            x, e_ap = solve_func(pos, ctx, key)
+            cache[key] = (float(np.sqrt(np.mean((x - e_ap) ** 2))), x, e_ap)
+        if verbose:
+            print(f"    p={key:.4f}: node_RMS={cache[key][0]:.6f}")
+        return cache[key][0]
+
+    p_opt = float(minimize_scalar(fit_rms, bounds=p_bounds, method="bounded",
+                                  options={"xatol": xatol}).x)
+    key = round(p_opt, 6)
+    if key not in cache:
+        fit_rms(key)
+    rms, x, e_ap = cache[key]
+    return rms, p_opt, x, e_ap
 
 
 # ---------- 主函数 ----------
