@@ -370,6 +370,13 @@ $\mathbf{G}$即面板在球面上的中心点，满足$|\mathbf{O}_k\mathbf{G}|=
 
 对三种方案都予以实验、比较，综合可行性与精度进行选择。方案三涉及曲面积分，可能难以解析计算或耗时过长；若其不可行，则退而采用方案二或方案一。
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{../figures/fig_scheme_compare.pdf}
+    \caption{三种调节方案的残差比较（p* = 140.3743\,m）。节点残差约 51.5\,mm，面板中心残差约 42.6\,mm，整面板积分残差约 43.6\,mm；后两者相差不到 1\,mm，表明方案二在保留节点精度的同时更好地兼顾面板整体形貌，最终采用方案二。}
+    \label{fig:scheme_compare}
+\end{figure}
+
 % ==================== 问题三 ====================
 \section{问题三：接收比计算模型}
 
@@ -443,9 +450,30 @@ A_{\text{total}}=\pi\cdot 150^{2}
 
 对三种调节方案的结果进行比较：方案一仅考虑节点拟合，计算最为简便但未顾及面板整体形貌；方案二在节点偏差基础上加入面板中心偏差，拟合精度更高；方案三以曲面积分度量整体偏差，理论最优但计算复杂度最高。综合可行性与精度选择最终方案。调节后各节点伸缩量须满足$|\delta_i|\le 0.6\,\mathrm{m}$约束，相邻索长变化不超过$0.07\%$，以验证调节方案的可行性。
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{../figures/fig_extension_field.pdf}
+    \caption{问题二伸缩量分布（p* = 140.3743\,m）。灰色为理想抛物面对应的径向伸缩量$\hat\delta_i$，呈抛物线形（峰值约 270\,mm、最低约 $-400\,\mathrm{mm}$），但其相邻索长变化最大达 $0.128\%$，超出 $0.07\%$ 限值而不可行；蓝色为约束下嵌套联合优化的可行解$\delta_i^*$，受 0.07\% 索长约束驱动在多段被夹至限幅位置，伸缩量最终落在 $[\delta_{\min},\,\delta_{\max}]$。}
+    \label{fig:extension_field}
+\end{figure}
+
 \subsection{问题三结果检验}
 
 接收比$\eta$的分子分母均以投影面积加权，量纲一致。当反射面为理想抛物面时，所有反射光均经过焦点$P$，接收比理论值为$1$；调节后反射面偏离理想抛物面，接收比降低。将调节后反射面的接收比与基准反射球面的接收比作比较，可验证调节方案的有效性。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.92\textwidth]{../figures/fig_spot_pattern.pdf}
+    \caption{接收平面内反射光落点分布（接收平面过馈源舱$P$、垂直于观测轴$\mathbf{n}$；馈源舱有效区域为以$P$为圆心、半径 0.5\,m 的圆盘）。左图为基准反射球面：落点散布范围约 $\pm 30$\,m，接收比 $\eta = 0.053$；右图为第 2 问调节后的反射面：落点显著向圆心聚集，$\eta = 0.340$，是基准的 6.5 倍，验证了调节方案的有效性。}
+    \label{fig:spot_pattern}
+\end{figure}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{../figures/fig_p_sensitivity.pdf}
+    \caption{焦距$p$敏感性分析（方案一目标）。左轴蓝线为残差 RMS，$p = 140.37$\,m 时取最小值 51.5\,mm（贴近优先）；右轴橙线为接收比 $\eta$，$p \approx 140.45$\,m 时取最大值 $\eta = 0.494$（接收优先）。两条曲线峰值位置不同：RMS 对活塞与倾斜误差同等敏感，而 $\eta$ 主要惩罚倾斜误差，使接收比曲线在更小$p$附近达到极大。本作品主方案按题面"尽量贴近"采用贴近优先，$p^* = 140.3743\,\mathrm{m}$。}
+    \label{fig:p_sensitivity}
+\end{figure}
 
 
 % ==================== 模型评价与推广 ====================
@@ -498,6 +526,13 @@ A_{\text{total}}=\pi\cdot 150^{2}
 \section{附录：核心代码}
 
 本节展示求解模型的核心代码。完整代码及数据文件详见随附电子材料。
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.78\textwidth]{../figures/fig_inner_solver.pdf}
+    \caption{内层求解器对照（同一焦距$p = 140.3743$\,m 下的方案一目标）。罚函数法与坐标下降法均得到约 66\,mm 的 RMS，而本文采用的混合多起点策略以罚函数解为初值、再用多顺序坐标下降跳出局部极小，残差降至 51.5\,mm，相对前两者改善约 23\%。}
+    \label{fig:inner_solver}
+\end{figure}
 
 
 \end{document}
