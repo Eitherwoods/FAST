@@ -327,11 +327,14 @@ INNER_SOLVERS = {"best": fit_best, "coord": fit_coordinate_descent,
 # ---------- 外层：嵌套联合优化（同时确定焦距 p 与伸缩量 x） ----------
 
 def solve_adjustment(pos, panels, alpha_deg, beta_deg, inner="best",
-                     p_bounds=P_BOUNDS, xatol=0.02):
+                     p_bounds=P_BOUNDS, xatol=1e-4):
     """在反射面板调节约束下确定理想抛物面并给出调节方案。
 
     外层以焦距 p 为决策变量，目标为约束下调节方案相对理想交点的均方根残差；
     内层对给定 p 求约束下最贴近理想伸缩量的可行解。
+
+    xatol 为外层一维搜索的焦距精度：内层解相对理想交点的残差在 p 的
+    0.01 m 量级上已有起伏，故取 1e-4 而非默认的 0.02，避免 p* 漂移。
     """
     n = axis_vector(alpha_deg, beta_deg)
     R = np.linalg.norm(pos, axis=1).mean()
@@ -339,7 +342,9 @@ def solve_adjustment(pos, panels, alpha_deg, beta_deg, inner="best",
     solver = INNER_SOLVERS[inner]
 
     def stage(p):
-        e_ap, _, _ = radial_extensions(pos[ctx["in_ap"]], n, p)
+        # 显式传全体节点的基准半径 R（与 schemes_compare 一致），
+        # 避免用口径内子集均值带来的口径差异
+        e_ap, _, _ = radial_extensions(pos[ctx["in_ap"]], n, p, R)
         return solver(ctx, e_ap), e_ap
 
     cache = {}
@@ -357,7 +362,7 @@ def solve_adjustment(pos, panels, alpha_deg, beta_deg, inner="best",
     if key not in cache:
         cache[key] = stage(key)
     x, e_ap = cache[key]
-    _, u_ap, R_ap = radial_extensions(pos[ctx["in_ap"]], n, p_opt)
+    _, u_ap, R_ap = radial_extensions(pos[ctx["in_ap"]], n, p_opt, R)
 
     ext = np.zeros(len(pos))
     ext[ctx["ap_idx"]] = x

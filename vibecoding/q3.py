@@ -20,7 +20,7 @@ import numpy as np
 from pathlib import Path
 
 from common import (ALPHA_Q2, BETA_Q2, APERTURE_RADIUS, load_data,
-                    panel_sphere_centers, solve_adjustment, triangle_bary)
+                    panel_sphere_centers, triangle_bary)
 
 ALPHA, BETA = ALPHA_Q2, BETA_Q2
 SAMPLE_M = 20            # 每块面板三角形网格采样阶数，采样点数 m(m+1)/2
@@ -93,19 +93,55 @@ def ideal_paraboloid_ratio(R, n, p, P, V):
 
 # ---------- 主流程 ----------
 
+def load_adjustment(xlsx=None):
+    """读取第 2 问的 result.xlsx 作为调节方案，保证问题三与提交结果同源。
+
+    题目要求“基于第 2 问的反射面调节方案”计算接收比，故问题三不再重跑优化，
+    而是直接以提交文件中的顶点与调整后节点坐标为准：
+      - 顶点 V 反解观测轴 n = -V/|V| 与焦距 p = |V| - 0.534R；
+      - 调整后节点坐标表给出口径内节点（口径外节点保持基准态）。
+    """
+    from openpyxl import load_workbook
+
+    names, pos, panels = load_data()
+    R = float(np.linalg.norm(pos, axis=1).mean())
+    path = Path(xlsx) if xlsx else Path(__file__).resolve().parent / "result.xlsx"
+    if not path.exists():
+        sys.exit(f"未找到 {path}：请先运行 q2.py 生成第 2 问的调节方案。")
+
+    wb = load_workbook(path, data_only=True)
+    v = np.array(next(wb["理想抛物面顶点坐标"].iter_rows(
+        min_row=2, max_row=2, max_col=3, values_only=True)), dtype=float)
+    n = -v / np.linalg.norm(v)
+    p = float(np.linalg.norm(v) - 0.534 * R)
+
+    idx = {nm: i for i, nm in enumerate(names)}
+    pos_adj = pos.copy()
+    in_ap = np.zeros(len(names), dtype=bool)
+    for row in wb["调整后主索节点编号及坐标"].iter_rows(min_row=2, values_only=True):
+        i = idx[str(row[0])]
+        pos_adj[i] = (float(row[1]), float(row[2]), float(row[3]))
+        in_ap[i] = True
+
+    return dict(R=R, n=n, p=p, in_ap=in_ap, pos_adj=pos_adj, vertex=v,
+                focus=-0.534 * R * n, source=path.name)
+
+
 def main():
     names, pos, panels = load_data()
-    adj = solve_adjustment(pos, panels, ALPHA, BETA)
+    adj = load_adjustment()
     R, n, in_ap = adj["R"], adj["n"], adj["in_ap"]
     lines = ["问题三接收比计算结果",
              "",
              f"基准球面半径 R = {R:.4f} m",
              f"观测方向 α = {ALPHA}°, β = {BETA}°",
+             f"调节方案来源：{adj['source']}（第 2 问提交结果）",
              f"最优焦距 p = {adj['p']:.4f} m",
              f"馈源舱（焦点）P = ({adj['focus'][0]:.4f}, {adj['focus'][1]:.4f}, {adj['focus'][2]:.4f}) m",
              f"理想抛物面顶点 V = ({adj['vertex'][0]:.4f}, {adj['vertex'][1]:.4f}, {adj['vertex'][2]:.4f}) m",
              ""]
-    print(f"调节方案：焦距 p = {adj['p']:.4f} m，口径内节点 {in_ap.sum()} 个")
+    print(f"调节方案（读自 {adj['source']}）：焦距 p = {adj['p']:.4f} m，"
+          f"口径内节点 {in_ap.sum()} 个")
 
     # 与照明区相交的面板（至少一个顶点在口径内）：边缘跨界面板按采样点逐点截断
     ap_panels = in_ap[panels].any(axis=1)
