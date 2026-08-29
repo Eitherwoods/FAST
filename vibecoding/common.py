@@ -3,8 +3,8 @@
 
 几何约定
 --------
-- 基准球面球心 C 在坐标原点，半径 R = 全部主索节点模长均值（≈300.4 m）。
-- 观测轴单位向量 n = (cosβcosα, cosβsinα, sinβ)，焦点（馈源舱）P = -0.534R·n。
+- 基准球面球心 C 在坐标原点，半径 R = 全部主索节点模长均值（~=300.4 m）。
+- 观测轴单位向量 n = (cos(beta)cos(alpha), cos(beta)sin(alpha), sin(beta))，焦点（馈源舱）P = -0.534R·n。
 - 理想抛物面：焦点 P、对称轴 n、焦距 p，顶点 V = -(0.534R + p)·n。
 - 节点沿基准球面径向移动，伸缩量 x 以“向球心”为正；节点 i 径向单位向量 u_i，
   A_i = u_i·n，径向与抛物面交点半径 t 满足
@@ -13,15 +13,15 @@
 
 约束
 ----
-- 促动器行程 |x_i| ≤ 0.6 m；
-- 相邻节点间距相对变化 ≤ 0.07%。径向移动不改变两节点的径向夹角 ψ，故调节后边长
-  L1 = sqrt(Ri'² + Rj'² - 2Ri'Rj'cosψ)。
+- 促动器行程 |x_i| <= 0.6 m；
+- 相邻节点间距相对变化 <= 0.07%。径向移动不改变两节点的径向夹角 psi，故调节后边长
+  L1 = sqrt(Ri'² + Rj'² - 2Ri'Rj'cospsi)。
 
 内层求解器
 ----------
 - ``fit_coordinate_descent``：坐标下降，逐节点取闭式解 clip(e_i, lo, hi)，
   可行区间由边约束解析给出（方案一的目标函数），约束精确满足且残差最小，为默认。
-- ``fit_penalty``：罚函数法（λ 逐级放大至可行），保留用于对照。
+- ``fit_penalty``：罚函数法（lambda 逐级放大至可行），保留用于对照。
 """
 import numpy as np
 import pandas as pd
@@ -56,7 +56,7 @@ def load_data():
 
 
 def axis_vector(alpha_deg, beta_deg):
-    """由方位角 α、仰角 β 计算观测轴单位向量。"""
+    """由方位角 alpha、仰角 beta 计算观测轴单位向量。"""
     a, b = np.deg2rad(alpha_deg), np.deg2rad(beta_deg)
     return np.array([np.cos(b) * np.cos(a), np.cos(b) * np.sin(a), np.sin(b)])
 
@@ -183,7 +183,7 @@ def adjust_nodes(pos, x, ctx):
 
 
 def max_rel_change(x, ctx):
-    """相邻节点间距相对变化（径向移动不改变径向夹角 ψ）。"""
+    """相邻节点间距相对变化（径向移动不改变径向夹角 psi）。"""
     Rp = ctx["R_all"].copy()
     Rp[ctx["ap_idx"]] -= x
     L1 = np.sqrt(Rp[ctx["ie"]] ** 2 + Rp[ctx["je"]] ** 2
@@ -196,7 +196,7 @@ def max_rel_change(x, ctx):
 def edge_interval_Rp(e, Rp_other, R_base, ctx):
     """给定边 e 的对端半径与本端基线半径，返回本端半径的可行区间。
 
-    边长约束 |L1-L0|/L0 ≤ tol 化为本端半径的区间（取含基线值的连通分量）。
+    边长约束 |L1-L0|/L0 <= tol 化为本端半径的区间（取含基线值的连通分量）。
     """
     c, s2 = ctx["cospsi"][e], ctx["sin2"][e]
     base = Rp_other * c
@@ -277,9 +277,9 @@ def fit_coordinate_descent(ctx, e_ap, sweeps=60, seed=0, x_init=None):
 
 
 def fit_penalty(ctx, e_ap, lam0=1e8, rounds=8, tol=EDGE_TOL_SOLVE):
-    """罚函数法：λ 逐级放大直至边约束可行（保留用于与坐标下降法对照）。
+    """罚函数法：lambda 逐级放大直至边约束可行（保留用于与坐标下降法对照）。
 
-    目标 Σ(x_i-e_i)² + λ Σ max(0, ΔL/L0 - tol)²，box bound 由 L-BFGS-B 处理。
+    目标 Σ(x_i-e_i)² + lambda Σ max(0, ΔL/L0 - tol)²，box bound 由 L-BFGS-B 处理。
     """
     ap_idx = ctx["ap_idx"]
     bnds = [(-EXT_LIMIT, EXT_LIMIT)] * ap_idx.size

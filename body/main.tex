@@ -56,7 +56,7 @@ FAST主动反射面的形状调节，本质是在促动器行程与索网受力�
 
 \subsection{问题提出}
 
-根据上述背景及附录所给参数，本文需要建立模型解决以下三个问题：
+根据上述背景及附件所给参数，本文需要建立模型解决以下三个问题：
 
 \textbf{问题一}：当待观测天体$S$位于基准球面正上方，即方位角$\alpha=0^{\circ}$、仰角$\beta=90^{\circ}$时，结合考虑反射面板调节因素，确定理想抛物面。
 
@@ -346,7 +346,7 @@ D249 & $145.053$ & $-0.875694$ & $0.233160$ & $399283.69$ & $300.628844$ \\
 p^{*}=\arg\min_{p\in[\,139.9,\;140.9\,]}\ \mathrm{RMS}(p)
 \end{equation}
 
-搜索区间取以$0.466R=139.9864\,\mathrm{m}$为中心、半径$0.5\,\mathrm{m}$的邻域，其选取有三点依据。其一，抛物面顶点按式~\eqref{eq:vertex}应大致落在基准球面附近（$0.534R+p\approx R$给出$p\approx0.466R$）。其二，由附录表~\ref{tab:p_scan}可见理想交点伸缩量随$p$近似以$1\,\mathrm{m}/\mathrm{m}$的速率整体平移，而促动器行程限幅仅$\pm0.6\,\mathrm{m}$，故$p$的有效范围被限制在中心附近$\pm0.6\,\mathrm{m}$以内，取$\pm0.5\,\mathrm{m}$留有裕度。其三，数值预扫描表明$\mathrm{RMS}(p)$在该区间外迅速恶化。以$\mathrm{RMS}(p)$为外层目标的合理性在于：它同时包含``目标是否合理''与``约束是否苛刻''两重信息——若某个$p$使$\hat{\boldsymbol{\delta}}(p)$本身剧烈振荡，则无论内层如何逼近都难以得到小的残差，$\mathrm{RMS}(p)$自然变大。这正体现了``结合考虑反射面板调节因素确定理想抛物面''的题意。
+搜索区间取以$0.466R=139.9864\,\mathrm{m}$为中心、半径$0.5\,\mathrm{m}$的邻域，其选取有三点依据。其一，抛物面顶点按式~\eqref{eq:vertex}应大致落在基准球面附近（$0.534R+p\approx R$给出$p\approx0.466R$）。其二，由表~\ref{tab:p_scan}可见理想交点伸缩量随$p$近似以$1\,\mathrm{m}/\mathrm{m}$的速率整体平移，而促动器行程限幅仅$\pm0.6\,\mathrm{m}$，故$p$的有效范围被限制在中心附近$\pm0.6\,\mathrm{m}$以内，取$\pm0.5\,\mathrm{m}$留有裕度。其三，数值预扫描表明$\mathrm{RMS}(p)$在该区间外迅速恶化。以$\mathrm{RMS}(p)$为外层目标的合理性在于：它同时包含``目标是否合理''与``约束是否苛刻''两重信息——若某个$p$使$\hat{\boldsymbol{\delta}}(p)$本身剧烈振荡，则无论内层如何逼近都难以得到小的残差，$\mathrm{RMS}(p)$自然变大。这正体现了``结合考虑反射面板调节因素确定理想抛物面''的题意。
 
 \subsection{内层求解：混合多起点策略}
 
@@ -369,15 +369,96 @@ p^{*}=\arg\min_{p\in[\,139.9,\;140.9\,]}\ \mathrm{RMS}(p)
 
 \textbf{（3）混合策略。}以罚函数解为初值再作坐标下降（更换多种扫描顺序、各扫$60$轮），取目标值最小的可行解，兼顾全局可达性与局部最优性。
 
-为量化混合策略的收益，在完全相同的条件下（问题二方向、$p=140.3743\,\mathrm{m}$、同一目标$\hat{\boldsymbol{\delta}}$）对三种做法作对照，结果列于附录表~\ref{tab:inner_solver}（并绘于附录图~\ref{fig:inner_solver}）。罚函数法与坐标下降法分别得到$66.81\,\mathrm{mm}$与$66.13\,\mathrm{mm}$的残差，且后者由$60$轮增至$300$轮结果完全不变——说明它并非迭代不足，而是确已收敛到自己的局部最优；混合多起点策略则把残差降至$51.53\,\mathrm{mm}$，相对较优的单一方法降低$22.1\%$。在$p\in\{140.30,\,140.40,\,140.50\}\,\mathrm{m}$三个额外焦距上重复该对照，混合策略始终最优，分别降低$17.1\%$、$14.4\%$、$8.2\%$。故本文在全部计算中统一采用混合多起点策略。
+为量化混合策略的收益，在完全相同的条件下（问题二方向、$p=140.3743\,\mathrm{m}$、同一目标$\hat{\boldsymbol{\delta}}$）对三种做法作对照，结果列于表~\ref{tab:inner_solver}（并绘于图~\ref{fig:inner_solver}）。罚函数法与坐标下降法分别得到$66.81\,\mathrm{mm}$与$66.13\,\mathrm{mm}$的残差，且后者由$60$轮增至$300$轮结果完全不变——说明它并非迭代不足，而是确已收敛到自己的局部最优；混合多起点策略则把残差降至$51.53\,\mathrm{mm}$，相对较优的单一方法降低$22.1\%$。在$p\in\{140.30,\,140.40,\,140.50\}\,\mathrm{m}$三个额外焦距上重复该对照，混合策略始终最优，分别降低$17.1\%$、$14.4\%$、$8.2\%$。故本文在全部计算中统一采用混合多起点策略。
 
-为验证该策略所得解已接近全局最优，本文另做两组对照，结果列于附录表~\ref{tab:global_opt}。其一，以$30$个随机种子独立运行坐标下降（每种子$60$轮），最优$62.72\,\mathrm{mm}$、均值$65.27\,\mathrm{mm}$、最大$69.56\,\mathrm{mm}$——即便取$30$个起点的最优解，仍比混合策略差约$22\%$。这说明多起点坐标下降各自停在$62\sim70\,\mathrm{mm}$的``盆地''中，罚函数解作为初值跳出该盆地是决定性的，仅靠``增加随机起点''不能替代混合策略。其二，用标准非线性规划求解器SLSQP直接求解原内层问题~\eqref{eq:inner}（以理想交点截断解与混合解两个起点启动），两起点均收敛至$50.11\,\mathrm{mm}$（迭代$80$次尚未完全收敛，边长最大相对变化$0.06997\%$满足约束），与混合解$51.53\,\mathrm{mm}$相差仅$1.4\,\mathrm{mm}$（$2.7\%$）。这表明混合解已位于全局最优附近：即使换用独立的标准求解器，残差至多再改善$1.4\,\mathrm{mm}$，不改变本文任何结论。
+\begin{longtable}{l r r r}
+\caption{内层求解器对照（问题二方向，$p=140.3743\,\mathrm{m}$，口径内$692$节点、$2165$条边）} \label{tab:inner_solver} \\
+\toprule
+求解器 & 残差$\mathrm{RMS}\,(\mathrm{mm})$ & $|\delta|_{\max}\,(\mathrm{mm})$ & 边长最大相对变化 \\
+\midrule
+\endfirsthead
+\toprule
+求解器 & 残差$\mathrm{RMS}\,(\mathrm{mm})$ & $|\delta|_{\max}\,(\mathrm{mm})$ & 边长最大相对变化 \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\bottomrule
+\endlastfoot
+罚函数法（$\lambda$自$10^{8}$起$\times10$，共$8$轮） & $66.81$ & $216.9$ & $0.06997\%$ \\
+坐标下降（$60$轮） & $66.13$ & $255.1$ & $0.06997\%$ \\
+坐标下降（$300$轮，已收敛） & $66.13$ & $255.1$ & $0.06997\%$ \\
+\textbf{混合多起点（本文采用）} & $\mathbf{51.53}$ & $251.5$ & $0.06997\%$ \\
+\midrule
+\multicolumn{4}{p{12.4cm}}{\small 注：混合策略以罚函数解为初值再作多顺序坐标下降。三种做法均满足约束，目标值越低越好。}\\
+\bottomrule
+\end{longtable}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.68\textwidth]{../figures/fig_inner_solver.pdf}
+    \caption{内层求解器对照（问题二方向，$p = 140.3743$\,m，方案一目标，口径内 692 节点）}
+\figexp{罚函数法与坐标下降法分别得到 66.81\,mm 与 66.13\,mm 的残差 RMS（后者增至 300 轮仍为 66.13\,mm，已收敛到自己的局部最优），而本文采用的混合多起点策略以罚函数解为初值、再用多顺序坐标下降跳出该局部极小，残差降至 51.53\,mm，相对较优的单一方法改善 22.1\%。}
+    \label{fig:inner_solver}
+\end{figure}
+
+为验证该策略所得解已接近全局最优，本文另做两组对照，结果列于表~\ref{tab:global_opt}。其一，以$30$个随机种子独立运行坐标下降（每种子$60$轮），最优$62.72\,\mathrm{mm}$、均值$65.27\,\mathrm{mm}$、最大$69.56\,\mathrm{mm}$——即便取$30$个起点的最优解，仍比混合策略差约$22\%$。这说明多起点坐标下降各自停在$62\sim70\,\mathrm{mm}$的``盆地''中，罚函数解作为初值跳出该盆地是决定性的，仅靠``增加随机起点''不能替代混合策略。其二，用标准非线性规划求解器SLSQP直接求解原内层问题~\eqref{eq:inner}（以理想交点截断解与混合解两个起点启动），两起点均收敛至$50.11\,\mathrm{mm}$（迭代$80$次尚未完全收敛，边长最大相对变化$0.06997\%$满足约束），与混合解$51.53\,\mathrm{mm}$相差仅$1.4\,\mathrm{mm}$（$2.7\%$）。这表明混合解已位于全局最优附近：即使换用独立的标准求解器，残差至多再改善$1.4\,\mathrm{mm}$，不改变本文任何结论。
+
+\begin{longtable}{p{6.4cm} r p{6.6cm}}
+\caption{内层求解的全局最优性对照（问题二方向，$p=140.3743\,\mathrm{m}$）} \label{tab:global_opt} \\
+\toprule
+求解途径 & 残差$\mathrm{RMS}\;(\mathrm{mm})$ & 说明 \\
+\midrule
+\endfirsthead
+\toprule
+求解途径 & 残差$\mathrm{RMS}\;(\mathrm{mm})$ & 说明 \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\bottomrule
+\endlastfoot
+坐标下降（$30$随机种子，最优） & $62.72$ & 多起点坐标下降各自停在$62\sim70\,\mathrm{mm}$的``盆地'' \\
+坐标下降（$30$随机种子，均值） & $65.27$ & 仅靠``增加随机起点''不能替代罚函数初值 \\
+坐标下降（$30$随机种子，最差） & $69.56$ & --- \\
+\textbf{混合多起点（本文采用）} & $\mathbf{51.53}$ & 罚函数解为初值$+$多顺序坐标下降 \\
+SLSQP（独立标准求解器，双起点） & $50.11$ & 迭代$80$次尚未完全收敛；与混合解仅差$1.4\,\mathrm{mm}$（$2.7\%$） \\
+\midrule
+\multicolumn{3}{p{13.4cm}}{\small 注：全部解均满足行程与边长约束（边长最大相对变化$0.06997\%$）。SLSQP 两个起点（理想交点截断解、混合解）收敛至同一残差$50.11\,\mathrm{mm}$，表明混合解已位于全局最优附近。}\\
+\bottomrule
+\end{longtable}
 
 \subsection{外层一维搜索与中间结果}
 
 外层问题~\eqref{eq:outer}是单变量、单峰性未知的一维优化。本文采用有界黄金分割与抛物线插值相结合的方法（\texttt{scipy.minimize\_scalar}的\texttt{bounded}方法），并把搜索精度提高到$xatol=10^{-4}\,\mathrm{m}$——内层残差在$p$的$0.01\,\mathrm{m}$量级上已有明显起伏，默认精度会导致$p^{*}$漂移。
 
-附录表~\ref{tab:p_scan}给出问题一情形下的外层扫描中间结果，其曲线形状与图~\ref{fig:p_sensitivity}的蓝线一致（后者针对问题二方向绘制，二者极值位置仅相差$3\,\mathrm{mm}$）。该表揭示了两件事。第一，$\mathrm{RMS}(p)$在扫描区间内呈明显的单谷形，$p$偏离$p^{*}$仅$0.4\,\mathrm{m}$（相对偏离$0.3\%$）残差即从$46.6\,\mathrm{mm}$恶化到$278.1\,\mathrm{mm}$，说明焦距的确定精度对调节效果至关重要，$p$必须由优化而非经验给出。第二，随着$p$由$140.00$增至$140.80\,\mathrm{m}$，理想交点伸缩量整体向负方向平移（由$[-13.6,\,680.9]$变为$[-841.0,\,-174.3]\,\mathrm{mm}$）——这正是``活塞''误差的来源：$p$的偏差等价于把整个目标曲面沿径向平移，而$0.07\%$的索长约束几乎不允许这种整体平移，于是内层的残差随之增大。
+表~\ref{tab:p_scan}给出问题一情形下的外层扫描中间结果，其曲线形状与图~\ref{fig:p_sensitivity}的蓝线一致（后者针对问题二方向绘制，二者极值位置仅相差$3\,\mathrm{mm}$）。该表揭示了两件事。第一，$\mathrm{RMS}(p)$在扫描区间内呈明显的单谷形，$p$偏离$p^{*}$仅$0.4\,\mathrm{m}$（相对偏离$0.3\%$）残差即从$46.6\,\mathrm{mm}$恶化到$278.1\,\mathrm{mm}$，说明焦距的确定精度对调节效果至关重要，$p$必须由优化而非经验给出。第二，随着$p$由$140.00$增至$140.80\,\mathrm{m}$，理想交点伸缩量整体向负方向平移（由$[-13.6,\,680.9]$变为$[-841.0,\,-174.3]\,\mathrm{mm}$）——这正是``活塞''误差的来源：$p$的偏差等价于把整个目标曲面沿径向平移，而$0.07\%$的索长约束几乎不允许这种整体平移，于是内层的残差随之增大。
+
+\begin{longtable}{c r r r}
+\caption{问题一外层焦距扫描的中间结果（$\alpha=0^{\circ}$、$\beta=90^{\circ}$，口径内$706$节点）} \label{tab:p_scan} \\
+\toprule
+$p\;(\mathrm{m})$ & $\mathrm{RMS}\;(\mathrm{mm})$ & 理想伸缩量范围$(\mathrm{mm})$ & 可行解范围$(\mathrm{mm})$ \\
+\midrule
+\endfirsthead
+\toprule
+$p\;(\mathrm{m})$ & $\mathrm{RMS}\;(\mathrm{mm})$ & 理想伸缩量范围$(\mathrm{mm})$ & 可行解范围$(\mathrm{mm})$ \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\bottomrule
+\endlastfoot
+$140.00$ & $319.51$ & $[-13.61,\;680.87]$ & $[-13.61,\;344.75]$ \\
+$140.20$ & $150.38$ & $[-213.61,\;466.81]$ & $[-213.61,\;263.78]$ \\
+$140.30$ & $78.06$ & $[-313.61,\;359.78]$ & $[-251.86,\;227.81]$ \\
+$\mathbf{140.3773}$ & $\mathbf{46.59}$ & $[-390.91,\;277.13]$ & $[-239.87,\;211.12]$ \\
+$140.45$ & $67.01$ & $[-463.61,\;199.42]$ & $[-231.43,\;199.42]$ \\
+$140.60$ & $148.93$ & $[-614.45,\;39.11]$ & $[-249.77,\;39.11]$ \\
+$140.80$ & $278.05$ & $[-840.99,\;-174.25]$ & $[-253.50,\;-122.85]$ \\
+\midrule
+\multicolumn{4}{p{12.8cm}}{\small 注：$\mathrm{RMS}$由混合多起点内层求解器给出，全部实验固定随机种子后结果可完全复现；扫描网格上的求解值（如$p=140.3773\,\mathrm{m}$行$46.59\,\mathrm{mm}$）与摘要所引最终值$46.3\,\mathrm{mm}$（在$p^{*}$处重新求解）之间的差异来自内层求解器的运行波动（$\pm0.3\,\mathrm{mm}$量级），不影响$p^{*}$的定位。}\\
+\bottomrule
+\end{longtable}
 
 \subsection{$\alpha=0^{\circ}$、$\beta=90^{\circ}$下的化简与求解}
 
@@ -543,7 +624,7 @@ V=(0,\,0,\,-0.534R-p^{*}),\qquad P=(0,\,0,\,-0.534R)=(0,\,0,\,-160.4136)\,\mathr
 \bottomrule
 \end{longtable}
 
-由表~\ref{tab:scheme_compare}可得三点结论。其一，三种方案搜索得到的最优焦距完全一致（$p^{*}=140.3743\,\mathrm{m}$）。该一致性并非实现细节所致：以三种方案各自的真实目标函数在$p\in\{140.20,\,140.30,\,140.3743,\,140.45,\,140.60\}\,\mathrm{m}$网格上独立求解（附录表~\ref{tab:p_obj_compare}），三者的目标曲线均为单谷形且极小值全部落在$p=140.3743$，与第~\ref{sec:q2intro}节的判断一致：焦距由$R$与$0.534R$的几何关系主导，不随拟合目标的细化而改变。其二，方案二、三确实在各自专项指标上取得最优——面板中心残差$42.65\,\mathrm{mm}$、整面板积分残差$43.57\,\mathrm{mm}$，相对方案一的$43.52$、$44.06\,\mathrm{mm}$分别改善$2.0\%$与$1.1\%$，但代价是节点残差由$51.49\,\mathrm{mm}$升至$51.93$、$52.06\,\mathrm{mm}$（恶化$0.9\%$、$1.1\%$），耗时增加$47\%$、$39\%$，各指标差异均在$2.5\%$以内。其三，差异微小的根源在于$0.07\%$的索长约束：该限值折算为绝对量仅$7.97\,\mathrm{mm}$，而理想伸缩量幅度达$200\sim400\,\mathrm{mm}$，节点可行域被压缩成沿理想曲面走向的狭窄``管道''——沿管道方向节点几乎不能移动（否则索长超限），横穿管道方向又受行程限幅约束，改变拟合目标只能在管道内重新分配误差。这与图~\ref{fig:extension_field}中可行解被``压平''的现象完全吻合。
+由表~\ref{tab:scheme_compare}可得三点结论。其一，三种方案搜索得到的最优焦距完全一致（$p^{*}=140.3743\,\mathrm{m}$）。该一致性并非实现细节所致：以三种方案各自的真实目标函数在$p\in\{140.20,\,140.30,\,140.3743,\,140.45,\,140.60\}\,\mathrm{m}$网格上独立求解（表~\ref{tab:p_obj_compare}），三者的目标曲线均为单谷形且极小值全部落在$p=140.3743$，与第~\ref{sec:q2intro}节的判断一致：焦距由$R$与$0.534R$的几何关系主导，不随拟合目标的细化而改变。其二，方案二、三确实在各自专项指标上取得最优——面板中心残差$42.65\,\mathrm{mm}$、整面板积分残差$43.57\,\mathrm{mm}$，相对方案一的$43.52$、$44.06\,\mathrm{mm}$分别改善$2.0\%$与$1.1\%$，但代价是节点残差由$51.49\,\mathrm{mm}$升至$51.93$、$52.06\,\mathrm{mm}$（恶化$0.9\%$、$1.1\%$），耗时增加$47\%$、$39\%$，各指标差异均在$2.5\%$以内。其三，差异微小的根源在于$0.07\%$的索长约束：该限值折算为绝对量仅$7.97\,\mathrm{mm}$，而理想伸缩量幅度达$200\sim400\,\mathrm{mm}$，节点可行域被压缩成沿理想曲面走向的狭窄``管道''——沿管道方向节点几乎不能移动（否则索长超限），横穿管道方向又受行程限幅约束，改变拟合目标只能在管道内重新分配误差。这与图~\ref{fig:extension_field}中可行解被``压平''的现象完全吻合。
 
 综上，方案一节点精度最优、计算量最小，面板精度的损失不足$2.5\%$、工程上可以接受，故本文最终采用\textbf{方案一}，其调节结果即为\texttt{result.xlsx}所载方案。需强调：方案三的曲面积分经重心坐标采样数值化后完全可以计算，并不存在可行性障碍——仅凭``计算量大''就排除一个更贴合物理的建模方案，在方法论上是不严谨的。
 
@@ -554,6 +635,30 @@ V=(0,\,0,\,-0.534R-p^{*}),\qquad P=(0,\,0,\,-0.534R)=(0,\,0,\,-160.4136)\,\mathr
     \figexp{方案一节点残差RMS最小（51.5\,mm）；方案二、三分别将面板中心残差与整面板积分残差进一步降低至42.6\,mm、43.6\,mm，但节点残差略有上升，且各方案差异均在2.5\%以内，最终采用方案一。}
     \label{fig:scheme_compare}
 \end{figure}
+
+\begin{longtable}{c r r r}
+\caption{三种方案各自目标函数随焦距$p$的变化（目标值$\times10^{-3}\,\mathrm{m}^{2}$）} \label{tab:p_obj_compare} \\
+\toprule
+$p\;(\mathrm{m})$ & 方案一目标$f_1$ & 方案二目标$f_2$ & 方案三目标$f_3$ \\
+\midrule
+\endfirsthead
+\toprule
+$p\;(\mathrm{m})$ & 方案一目标$f_1$ & 方案二目标$f_2$ & 方案三目标$f_3$ \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\bottomrule
+\endlastfoot
+$140.20$ & $22.06$ & $45.72$ & $23.82$ \\
+$140.30$ & $6.33$ & $12.97$ & $6.67$ \\
+$\mathbf{140.3743}$ & $\mathbf{2.66}$ & $\mathbf{4.52}$ & $\mathbf{1.90}$ \\
+$140.45$ & $5.33$ & $8.21$ & $2.99$ \\
+$140.60$ & $22.67$ & $37.29$ & $14.96$ \\
+\midrule
+\multicolumn{4}{p{13.0cm}}{\small 注：$f_1=\mathrm{mean}\bigl((\delta_i-\hat{\delta}_i)^{2}\bigr)$（节点拟合目标），$f_2=f_1+\mathrm{mean}(\Delta_k^{2})$（节点$+$面板中心目标），$f_3=\mathrm{mean}(\int_{S_k}\delta^{2}\,\mathrm{d}S/A_k)$（整面板积分目标）。三列均为单谷形且极小值全部落在$p=140.3743$（加粗行），为正文``三种方案最优焦距完全一致''提供了独立于实现细节的定量证据。}\\
+\bottomrule
+\end{longtable}
 
 \subsection{求解结果与提交文件}
 
@@ -757,7 +862,30 @@ A_{\mathrm{total}}=\sum_{k\in\mathcal{K}}\ \int_{S_k}|N(M)\cdot\mathbf{n}|\,\mat
 
 \subsection{问题二结果检验}\label{sec:verify}
 
-对\texttt{result.xlsx}所载调节方案执行六项独立校核，结果列于附录表~\ref{tab:verify}，全部通过。其中第五项校核尤为关键：它由伸缩量出发沿径向独立地反算出节点坐标，再与坐标表比对，最大偏差$9.6\times10^{-7}\,\mathrm{m}$仅来自$6$位小数的舍入，说明假设3（促动器沿径向伸缩）在数据层面自洽，不存在坐标与伸缩量由两套互不一致的逻辑生成的情形。第六项校核纳入了口径边界处的跨接边，保证边界不出现遗漏。
+对\texttt{result.xlsx}所载调节方案执行六项独立校核，结果列于表~\ref{tab:verify}，全部通过。其中第五项校核尤为关键：它由伸缩量出发沿径向独立地反算出节点坐标，再与坐标表比对，最大偏差$9.6\times10^{-7}\,\mathrm{m}$仅来自$6$位小数的舍入，说明假设3（促动器沿径向伸缩）在数据层面自洽，不存在坐标与伸缩量由两套互不一致的逻辑生成的情形。第六项校核纳入了口径边界处的跨接边，保证边界不出现遗漏。
+
+\begin{longtable}{c p{6.6cm} p{3.0cm} p{2.4cm}}
+\caption{\texttt{result.xlsx}调节方案的六项独立校核} \label{tab:verify} \\
+\toprule
+序号 & 校核内容 & 校核结果 & 结论 \\
+\midrule
+\endfirsthead
+\toprule
+序号 & 校核内容 & 校核结果 & 结论 \\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\bottomrule
+\endlastfoot
+1 & 伸缩量表行数与附件1节点数一致 & $2226=2226$ & 通过 \\
+2 & 口径内节点坐标表与伸缩量一一对应 & $692$ 行全部匹配 & 通过 \\
+3 & 行程限幅$|\delta_i|\le0.6\,\mathrm{m}$ & $|\delta|_{\max}=0.2516\,\mathrm{m}$ & 通过 \\
+4 & 口径外促动器伸缩量为$0$ & $1534$ 个全为$0$ & 通过 \\
+5 & 由伸缩量沿径向反算坐标，与坐标表比对 & 最大偏差$9.6\times10^{-7}\,\mathrm{m}$ & 通过 \\
+6 & $2165$ 条相关索逐条复核相对长度变化 & 最大$0.06997\%<0.07\%$ & 通过 \\
+\bottomrule
+\end{longtable}
 
 结合表~\ref{tab:scheme_compare}的三方案比较与图~\ref{fig:extension_field}的伸缩量分布可知，最终方案在紧约束下已充分利用节点的可行自由度：贴合残差$51.5\,\mathrm{mm}$约为理想伸缩量幅度（$230\sim390\,\mathrm{mm}$）的$15\%$，贴近程度良好。
 
@@ -854,15 +982,15 @@ $141.00$ & $459.69$ & $251.93$ & $0.0191$ \\
     \label{fig:p_sensitivity}
 \end{figure}
 
-% ==================== 模型评价与推广 ====================
-\section{模型评价与推广}
+% ==================== 模型优缺点 ====================
+\section{模型优缺点}
 
 \subsection{模型优点}
 
 \begin{itemize}
 \item \textbf{约束与目标同源。}由抛物面的几何定义建立一般方程~\eqref{eq:paraboloid}，焦距$p$与节点伸缩量$\boldsymbol{\delta}$在约束下由嵌套联合优化同时确定。``理想交点解不可行''这一关键论断（索长变化$0.128\%>0.07\%$）有严格数值依据，它直接决定了模型必须是两层的。
 
-\item \textbf{约束完整且逐条验证。}同时考虑行程上限与索长变化上限，并在索长约束中纳入口径边界处的跨接边；对提交结果执行六项独立校核（附录表~\ref{tab:verify}），全部通过。
+\item \textbf{约束完整且逐条验证。}同时考虑行程上限与索长变化上限，并在索长约束中纳入口径边界处的跨接边；对提交结果执行六项独立校核（表~\ref{tab:verify}），全部通过。
 
 \item \textbf{多方案比较而非先验取舍。}从节点、面板中心、整块面板积分三个层面提出并实际实现了三种方案，用统一指标（对每种方案都算全部三项残差）公平比较后择优；方案三的曲面积分经数值化后完全可算，本文没有以``计算量大''为由将其排除。
 
@@ -887,7 +1015,8 @@ $141.00$ & $459.69$ & $251.93$ & $0.0191$ \\
 
 除第~\ref{sec:sens}节的焦距敏感性外，本文还考察了三类扰动。其一，\textbf{基准球面半径$R$}：其标准差仅$0.216\,\mathrm{mm}$，在$\pm3\sigma$（$\pm0.65\,\mathrm{mm}$）内扰动时，由式~\eqref{eq:focus}、\eqref{eq:vertex}引起的焦点与顶点位移同为该量级，远小于本文讨论的形变，结论不受影响。其二，\textbf{内层求解器的可复现性}：全部实验固定随机种子，结果可完全复现；对扫描顺序的随机化探索使不同运行之间存在$\pm0.3\,\mathrm{mm}$量级的微小差异，远小于$p$偏离$0.01\,\mathrm{m}$所引起的数毫米变化，不影响$p^{*}$定位。其三，\textbf{口径判据}：以``到观测轴距离$\le150\,\mathrm{m}$''界定口径在边界处存在离散化取舍，本文通过纳入跨接边与按采样点逐点截断把边界效应降到最低（覆盖率$99.98\%$），处理是稳健的。
 
-\subsection{模型推广}
+% ==================== 模型推广 ====================
+\section{模型推广}
 
 \begin{itemize}
 \item 一般方程~\eqref{eq:paraboloid}配合嵌套联合优化模型~\eqref{eq:inner}--\eqref{eq:outer}适用于任意方位角与仰角，可直接用于不同观测方向下的理想抛物面确定与调节方案生成。
@@ -930,251 +1059,76 @@ $141.00$ & $459.69$ & $251.93$ & $0.0191$ \\
 
 \end{thebibliography}
 
+\clearpage
+
 % ==================== 附录 ====================
 \appendix
-\section{附录：补充图表、补充表格与核心代码}
+\section{附录：完整求解代码}
 
-本节汇总正文中引用的补充性材料：内层求解器对照实验与问题一外层焦距扫描的中间结果（均对应第~\ref{sec:nested}节）、\texttt{result.xlsx}的六项独立校核（对应第~\ref{sec:verify}节），以及本文的核心代码。
+本附录给出全部求解与校核代码，即随附电子材料\texttt{vibecoding/}目录下的源文件本身，未作任何改动地直接排入；全部数值结果均可由这些代码在固定随机种子后完全复现。代码按功能分为四组。源码编写时即把不能被代码字体渲染的数学符号（如$\alpha$、$\delta$、$\eta$、$\le$等）以等价 ASCII 记号（alpha、delta、eta、\texttt{<=}等）书写于注释与输出文本中，故不影响任何计算逻辑。
 
-\subsection{内层求解器对照}
+\subsection{公共模块}
 
-\begin{longtable}{l r r r}
-\caption{内层求解器对照（问题二方向，$p=140.3743\,\mathrm{m}$，口径内$692$节点、$2165$条边）} \label{tab:inner_solver} \\
-\toprule
-求解器 & 残差$\mathrm{RMS}\,(\mathrm{mm})$ & $|\delta|_{\max}\,(\mathrm{mm})$ & 边长最大相对变化 \\
-\midrule
-\endfirsthead
-\toprule
-求解器 & 残差$\mathrm{RMS}\,(\mathrm{mm})$ & $|\delta|_{\max}\,(\mathrm{mm})$ & 边长最大相对变化 \\
-\midrule
-\endhead
-\bottomrule
-\endfoot
-\bottomrule
-\endlastfoot
-罚函数法（$\lambda$自$10^{8}$起$\times10$，共$8$轮） & $66.81$ & $216.9$ & $0.06997\%$ \\
-坐标下降（$60$轮） & $66.13$ & $255.1$ & $0.06997\%$ \\
-坐标下降（$300$轮，已收敛） & $66.13$ & $255.1$ & $0.06997\%$ \\
-\textbf{混合多起点（本文采用）} & $\mathbf{51.53}$ & $251.5$ & $0.06997\%$ \\
-\midrule
-\multicolumn{4}{p{12.4cm}}{\small 注：混合策略以罚函数解为初值再作多顺序坐标下降。三种做法均满足约束，目标值越低越好。}\\
-\bottomrule
-\end{longtable}
+\textbf{common.py}：几何底座（坐标系与观测轴、径向求交与理想伸缩量、口径内节点与约束边的选取、面板球心反演）与内层``罚函数$+$多顺序坐标下降''混合多起点求解器，为其余全部脚本所共用。
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.68\textwidth]{../figures/fig_inner_solver.pdf}
-    \caption{内层求解器对照（问题二方向，$p = 140.3743$\,m，方案一目标，口径内 692 节点）}
-\figexp{罚函数法与坐标下降法分别得到 66.81\,mm 与 66.13\,mm 的残差 RMS（后者增至 300 轮仍为 66.13\,mm，已收敛到自己的局部最优），而本文采用的混合多起点策略以罚函数解为初值、再用多顺序坐标下降跳出该局部极小，残差降至 51.53\,mm，相对较优的单一方法改善 22.1\%。}
-    \label{fig:inner_solver}
-\end{figure}
+\lstinputlisting[style=mypython]{../vibecoding/common.py}
 
-\begin{longtable}{p{6.4cm} r p{6.6cm}}
-\caption{内层求解的全局最优性对照（问题二方向，$p=140.3743\,\mathrm{m}$）} \label{tab:global_opt} \\
-\toprule
-求解途径 & 残差$\mathrm{RMS}\;(\mathrm{mm})$ & 说明 \\
-\midrule
-\endfirsthead
-\toprule
-求解途径 & 残差$\mathrm{RMS}\;(\mathrm{mm})$ & 说明 \\
-\midrule
-\endhead
-\bottomrule
-\endfoot
-\bottomrule
-\endlastfoot
-坐标下降（$30$随机种子，最优） & $62.72$ & 多起点坐标下降各自停在$62\sim70\,\mathrm{mm}$的``盆地'' \\
-坐标下降（$30$随机种子，均值） & $65.27$ & 仅靠``增加随机起点''不能替代罚函数初值 \\
-坐标下降（$30$随机种子，最差） & $69.56$ & --- \\
-\textbf{混合多起点（本文采用）} & $\mathbf{51.53}$ & 罚函数解为初值$+$多顺序坐标下降 \\
-SLSQP（独立标准求解器，双起点） & $50.11$ & 迭代$80$次尚未完全收敛；与混合解仅差$1.4\,\mathrm{mm}$（$2.7\%$） \\
-\midrule
-\multicolumn{3}{p{13.4cm}}{\small 注：全部解均满足行程与边长约束（边长最大相对变化$0.06997\%$）。SLSQP 两个起点（理想交点截断解、混合解）收敛至同一残差$50.11\,\mathrm{mm}$，表明混合解已位于全局最优附近。}\\
-\bottomrule
-\end{longtable}
+\subsection{三问核心求解}
 
-\subsection{问题一外层焦距扫描的中间结果}
+\textbf{q1.py}：问题一（$\alpha=0^{\circ}$、$\beta=90^{\circ}$）的外层焦距一维搜索与嵌套联合优化求解。
 
-\begin{longtable}{c r r r}
-\caption{问题一外层焦距扫描的中间结果（$\alpha=0^{\circ}$、$\beta=90^{\circ}$，口径内$706$节点）} \label{tab:p_scan} \\
-\toprule
-$p\;(\mathrm{m})$ & $\mathrm{RMS}\;(\mathrm{mm})$ & 理想伸缩量范围$(\mathrm{mm})$ & 可行解范围$(\mathrm{mm})$ \\
-\midrule
-\endfirsthead
-\toprule
-$p\;(\mathrm{m})$ & $\mathrm{RMS}\;(\mathrm{mm})$ & 理想伸缩量范围$(\mathrm{mm})$ & 可行解范围$(\mathrm{mm})$ \\
-\midrule
-\endhead
-\bottomrule
-\endfoot
-\bottomrule
-\endlastfoot
-$140.00$ & $319.51$ & $[-13.61,\;680.87]$ & $[-13.61,\;344.75]$ \\
-$140.20$ & $150.38$ & $[-213.61,\;466.81]$ & $[-213.61,\;263.78]$ \\
-$140.30$ & $78.06$ & $[-313.61,\;359.78]$ & $[-251.86,\;227.81]$ \\
-$\mathbf{140.3773}$ & $\mathbf{46.59}$ & $[-390.91,\;277.13]$ & $[-239.87,\;211.12]$ \\
-$140.45$ & $67.01$ & $[-463.61,\;199.42]$ & $[-231.43,\;199.42]$ \\
-$140.60$ & $148.93$ & $[-614.45,\;39.11]$ & $[-249.77,\;39.11]$ \\
-$140.80$ & $278.05$ & $[-840.99,\;-174.25]$ & $[-253.50,\;-122.85]$ \\
-\midrule
-\multicolumn{4}{p{12.8cm}}{\small 注：$\mathrm{RMS}$由混合多起点内层求解器给出，全部实验固定随机种子后结果可完全复现；扫描网格上的求解值（如$p=140.3773\,\mathrm{m}$行$46.59\,\mathrm{mm}$）与摘要所引最终值$46.3\,\mathrm{mm}$（在$p^{*}$处重新求解）之间的差异来自内层求解器的运行波动（$\pm0.3\,\mathrm{mm}$量级），不影响$p^{*}$的定位。}\\
-\bottomrule
-\end{longtable}
+\lstinputlisting[style=mypython]{../vibecoding/q1.py}
 
-\begin{longtable}{c r r r}
-\caption{三种方案各自目标函数随焦距$p$的变化（目标值$\times10^{-3}\,\mathrm{m}^{2}$）} \label{tab:p_obj_compare} \\
-\toprule
-$p\;(\mathrm{m})$ & 方案一目标$f_1$ & 方案二目标$f_2$ & 方案三目标$f_3$ \\
-\midrule
-\endfirsthead
-\toprule
-$p\;(\mathrm{m})$ & 方案一目标$f_1$ & 方案二目标$f_2$ & 方案三目标$f_3$ \\
-\midrule
-\endhead
-\bottomrule
-\endfoot
-\bottomrule
-\endlastfoot
-$140.20$ & $22.06$ & $45.72$ & $23.82$ \\
-$140.30$ & $6.33$ & $12.97$ & $6.67$ \\
-$\mathbf{140.3743}$ & $\mathbf{2.66}$ & $\mathbf{4.52}$ & $\mathbf{1.90}$ \\
-$140.45$ & $5.33$ & $8.21$ & $2.99$ \\
-$140.60$ & $22.67$ & $37.29$ & $14.96$ \\
-\midrule
-\multicolumn{4}{p{13.0cm}}{\small 注：$f_1=\mathrm{mean}\bigl((\delta_i-\hat{\delta}_i)^{2}\bigr)$（节点拟合目标），$f_2=f_1+\mathrm{mean}(\Delta_k^{2})$（节点$+$面板中心目标），$f_3=\mathrm{mean}(\int_{S_k}\delta^{2}\,\mathrm{d}S/A_k)$（整面板积分目标）。三列均为单谷形且极小值全部落在$p=140.3743$（加粗行），为正文``三种方案最优焦距完全一致''提供了独立于实现细节的定量证据。}\\
-\bottomrule
-\end{longtable}
+\textbf{q2.py}：问题二（$\alpha=36.795^{\circ}$、$\beta=78.169^{\circ}$）的求解，并按附件4格式生成\texttt{result.xlsx}。
 
-\subsection{\texttt{result.xlsx}的六项独立校核}
+\lstinputlisting[style=mypython]{../vibecoding/q2.py}
 
-\begin{longtable}{c p{6.6cm} p{3.0cm} p{2.4cm}}
-\caption{\texttt{result.xlsx}调节方案的六项独立校核} \label{tab:verify} \\
-\toprule
-序号 & 校核内容 & 校核结果 & 结论 \\
-\midrule
-\endfirsthead
-\toprule
-序号 & 校核内容 & 校核结果 & 结论 \\
-\midrule
-\endhead
-\bottomrule
-\endfoot
-\bottomrule
-\endlastfoot
-1 & 伸缩量表行数与附件1节点数一致 & $2226=2226$ & 通过 \\
-2 & 口径内节点坐标表与伸缩量一一对应 & $692$ 行全部匹配 & 通过 \\
-3 & 行程限幅$|\delta_i|\le0.6\,\mathrm{m}$ & $|\delta|_{\max}=0.2516\,\mathrm{m}$ & 通过 \\
-4 & 口径外促动器伸缩量为$0$ & $1534$ 个全为$0$ & 通过 \\
-5 & 由伸缩量沿径向反算坐标，与坐标表比对 & 最大偏差$9.6\times10^{-7}\,\mathrm{m}$ & 通过 \\
-6 & $2165$ 条相关索逐条复核相对长度变化 & 最大$0.06997\%<0.07\%$ & 通过 \\
-\bottomrule
-\end{longtable}
+\textbf{q3.py}：问题三的射线追踪——面板球心反演、矢量反射、接收平面求交与投影面积加权接收比（含基准球面对照与理想抛物面自洽检验）。
 
-\subsection{核心代码}
+\lstinputlisting[style=mypython]{../vibecoding/q3.py}
 
-以下三段代码构成本文的计算核心，分别对应径向求交、内层坐标下降与射线追踪接收比三个环节。完整代码及数据文件详见随附电子材料。
+\subsection{方案比较与焦距实验}
 
-\subsubsection{径向求交：由二次方程求根得到理想伸缩量}
+\textbf{schemes\_compare.py}：三种拟合优度方案（节点/面板中心/整面板积分）的统一实现与公平比较。
 
-\begin{python}
-def radial_extensions(pos, n, p, R=None):
-    """各位置沿径向到达抛物面的理想伸缩量（向球心为正）。
+\lstinputlisting[style=mypython]{../vibecoding/schemes_compare.py}
 
-    节点 i 的径向单位向量 u_i，A_i = u_i . n，B = -0.534R，
-    交点距离 t 满足 (1-A^2) t^2 - 4 p A t + 4 p (B - p) = 0，
-    判别式 16 p [p + 0.534 R (1 - A^2)] 恒正，取使 t > 0 的根。
-    """
-    R_i = np.linalg.norm(pos, axis=1)
-    u = pos / R_i[:, None]
-    B = -0.534 * (R_i.mean() if R is None else R)
-    A = u @ n
-    a2 = 1.0 - A * A
-    disc = 16.0 * p * (p - B * a2)
-    t = np.empty_like(A)
-    mask = a2 > 1e-12
-    t[mask] = (4.0 * p * A[mask] + np.sqrt(disc[mask])) / (2.0 * a2[mask])
-    t[~mask] = (B - p) / A[~mask]          # 轴上节点的退化情形
-    return R_i - t, u, R_i
-\end{python}
+\textbf{p\_sensitivity.py}：焦距$p$双指标（残差、接收比）敏感性扫描，表~\ref{tab:sens}与图~\ref{fig:p_sensitivity}的数据来源。
 
-\subsubsection{内层：边约束可行区间解析化后的坐标下降}
+\lstinputlisting[style=mypython]{../vibecoding/p_sensitivity.py}
 
-\begin{python}
-def node_feasible_interval(i, Rp, ctx):
-    """节点 i 的伸缩量可行区间 [lo, hi]：各关联边约束的交集与行程限幅取交。
+\textbf{exp2\_p\_curve.py}：三方案各自真实目标随焦距$p$的独立求解，表~\ref{tab:p_obj_compare}的数据来源。
 
-    Rp 为各节点当前的调节后半径（R_i - delta_i）。对每条关联边，由余弦定理
-    L1^2 = R_i'^2 + R_j'^2 - 2 R_i' R_j' cos(psi) 及 |L1 - L0| <= tol*L0
-    解出本端半径的二次不等式区间，逐边求交。
-    """
-    lo, hi = -EXT_LIMIT, EXT_LIMIT
-    ni = ctx["ap_idx"][i]
-    R_base = ctx["R_all"][ni]
-    for e in ctx["inc"][i]:
-        other = ctx["je"][e] if ctx["ie"][e] == ni else ctx["ie"][e]
-        lo_e, hi_e = edge_interval_Rp(e, Rp[other], R_base, ctx)
-        lo = max(lo, R_base - hi_e)
-        hi = min(hi, R_base - lo_e)
-    if lo > hi:
-        lo = hi = 0.5 * (lo + hi)
-    return lo, hi
+\lstinputlisting[style=mypython]{../vibecoding/exp2_p_curve.py}
 
+\textbf{exp1\_global\_opt.py}：内层全局最优性对照（$30$随机种子坐标下降与SLSQP双起点），表~\ref{tab:global_opt}的数据来源。
 
-def fit_coordinate_descent(ctx, e_ap, sweeps=60, seed=0, x_init=None):
-    """以理想伸缩量 e_ap 为目标，在约束下最小化 ||x - e_ap||^2。
+\lstinputlisting[style=mypython]{../vibecoding/exp1_global_opt.py}
 
-    单变量子问题有闭式解：x_i = clip(e_ap_i, lo_i, hi_i)。
-    """
-    Rp = ctx["R_all"].copy()
-    Rp[ctx["ap_idx"]] -= (e_ap if x_init is None else x_init)
-    x = (e_ap.copy() if x_init is None else x_init.copy())
-    rng = np.random.default_rng(seed)
-    order = np.arange(ctx["nap"])
-    for _ in range(sweeps):
-        rng.shuffle(order)                 # 更换扫描顺序以跳出局部最优
-        for i in order:
-            lo, hi = node_feasible_interval(i, Rp, ctx)
-            new = min(max(e_ap[i], lo), hi)
-            Rp[ctx["ap_idx"][i]] += x[i] - new
-            x[i] = new
-    return x
-\end{python}
+\textbf{inner\_solver\_compare.py}：内层求解器对照（罚函数/坐标下降/混合多起点），表~\ref{tab:inner_solver}的数据来源。
 
-\subsubsection{射线追踪：精确法向与投影面积加权的接收比}
+\lstinputlisting[style=mypython]{../vibecoding/inner_solver_compare.py}
 
-\begin{python}
-def trace_ratio(verts, centers, R, n, P, bary):
-    """面板集合的接收比。verts (K,3,3) 为顶点，centers (K,3) 为反演球心。
+\textbf{pareto\_verify.py}：扫描点支配关系判别与帕累托前沿提取（式~\eqref{eq:pareto}）。
 
-    采样点由重心坐标给出，再沿球心径向投影到该面板所在球面得反射点 M；
-    精确法向 N = (M - O_k) / R；反射方向 r = -n + 2 (n.N) N；
-    与过 P 且垂直 n 的接收平面求交得 Q，|Q - P| <= 0.5 m 判为接收。
-    以投影面积 |N . n| dS 计权。
-    """
-    areas = 0.5 * np.linalg.norm(np.cross(verts[:, 1] - verts[:, 0],
-                                          verts[:, 2] - verts[:, 0]), axis=1)
-    S = np.einsum("sv,kvx->ksx", bary, verts)             # (K, S_n, 3)
-    rel = S - centers[:, None, :]
-    M = centers[:, None, :] + R * rel / np.linalg.norm(rel, axis=2)[:, :, None]
-    K, Sn = M.shape[:2]
-    M = M.reshape(-1, 3)
-    O = np.repeat(centers, Sn, axis=0)
-    w_area = np.repeat(areas / Sn, Sn)
+\lstinputlisting[style=mypython]{../vibecoding/pareto_verify.py}
 
-    rho = np.linalg.norm(M - np.outer(M @ n, n), axis=1)   # 到观测轴距离
-    keep = rho <= APERTURE_RADIUS                          # 逐点截断到 300 m 口径
+\subsection{结果校核与论文数据输出}
 
-    N = (M - O) / R
-    cosi = N @ n
-    refl = -n + 2.0 * cosi[:, None] * N
-    den = np.where(np.abs(refl @ n) < 1e-12, 1e-12, refl @ n)
-    tt = ((P - M) @ n) / den
-    Q = M + tt[:, None] * refl
-    dist = np.linalg.norm(Q - P, axis=1)
+\textbf{verify\_result.py}：对\texttt{result.xlsx}的六项独立校核（表~\ref{tab:verify}）。
 
-    w = (w_area * np.abs(cosi))[keep]
-    dist = dist[keep]
-    return float(w[dist <= FEED_RADIUS].sum() / w.sum()), float(w[keep].sum())
-\end{python}
+\lstinputlisting[style=mypython]{../vibecoding/verify_result.py}
+
+\textbf{paper\_data.py}：径向求交中间量（表~\ref{tab:radial_demo}）与伸缩量统计的生成。
+
+\lstinputlisting[style=mypython]{../vibecoding/paper_data.py}
+
+\textbf{paper\_data2.py}：口径覆盖率与投影面积统计（第~\ref{sec:q3_verify}节）的生成。
+
+\lstinputlisting[style=mypython]{../vibecoding/paper_data2.py}
+
+\textbf{make\_figures.py}：正文全部插图（\texttt{figures/}目录）的生成。
+
+\lstinputlisting[style=mypython]{../vibecoding/make_figures.py}
 
 \end{document}

@@ -3,9 +3,9 @@
 
 方案一：仅考虑节点拟合优度，min Σ_i (e_i - x_i)²
 方案二：考虑反射面板中心的拟合优度，min Σ_i (e_i - x_i)² + Σ_k Δ_k²
-方案三：考虑整个面板的拟合优度，min Σ_k ∫_{S_k} δ(M)² dS
+方案三：考虑整个面板的拟合优度，min Σ_k integral_{S_k} delta(M)² dS
 
-三方案均在 |x_i|≤0.6 与相邻节点间距变化 ≤0.07% 约束下求解。
+三方案均在 |x_i|<=0.6 与相邻节点间距变化 <=0.07% 约束下求解。
 方案一用 common.fit_best（罚函数解为初值 + 多起点坐标下降），与第2问提交的
 result.xlsx 完全一致；外层 p 搜索也与 common.solve_adjustment 相同（minimize_scalar,
 xatol=1e-4），三方案的 p* 与 result.xlsx 严格同源。方案二、三以方案一的解为初值继续坐标下降。
@@ -132,7 +132,7 @@ def solve_scheme2(pos, ctx, p, lam_panel=1.0, sweeps=12, x_init=None):
 
 
 def solve_scheme3(pos, ctx, p, sample_m=4, sweeps=10, x_init=None):
-    """方案三：min Σ_k ∫_{S_k} δ(M)² dS ≈ min Σ_k Σ_s δ_s² · dA_s。
+    """方案三：min Σ_k integral_{S_k} delta(M)² dS ~= min Σ_k Σ_s delta_s² · dA_s。
 
     每块面板用 sample_m 阶重心坐标采样，采样点投影到面板球面后计算径向偏差。
     每次更新 x_i 时，只需重算 i 关联面板的采样点偏差（标量版球心反演）。
@@ -325,7 +325,7 @@ def main():
 
     # ===== 方案三 =====
     print("\n" + "=" * 60)
-    print("方案三：整个面板拟合  min Σ_k ∫_{S_k} δ(M)² dS")
+    print("方案三：整个面板拟合  min Σ_k integral_{S_k} delta(M)² dS")
     print("=" * 60)
     t0 = time.time()
     x3, e3 = solve_scheme3(pos, ctx, p1, x_init=x1)

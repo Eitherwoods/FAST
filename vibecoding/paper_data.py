@@ -97,10 +97,10 @@ print("轴向量 n = (%.6f, %.6f, %.6f)，|n| = %.10f" % (n2[0], n2[1], n2[2], n
 ctx2 = build_context(pos, panels, n2)
 print("口径内节点数 = %d，参与约束的边数 = %d，三顶点全在口径内的面板数 = %d"
       % (res2["ext_ideal"].size, ctx2["ie"].size, ctx2["ap_panels"].sum()))
-print("可行伸缩量 [%.4f, %.4f] m，均值 %.4f mm，|δ| 最大 %.4f mm"
+print("可行伸缩量 [%.4f, %.4f] m，均值 %.4f mm，|delta| 最大 %.4f mm"
       % (res2["ext_fit"].min(), res2["ext_fit"].max(), res2["ext_fit"].mean() * 1000,
          np.abs(res2["ext_fit"]).max() * 1000))
-print("理想伸缩量 [%.4f, %.4f] m，|δ̂| 最大 %.4f mm"
+print("理想伸缩量 [%.4f, %.4f] m，|delta_hat| 最大 %.4f mm"
       % (res2["ext_ideal"].min(), res2["ext_ideal"].max(), np.abs(res2["ext_ideal"]).max() * 1000))
 
 pos_adj = adjust_nodes(pos, res2["ext_fit"], ctx2)
@@ -125,7 +125,7 @@ for tg in [0.0, 30.0, 60.0, 90.0, 120.0, 145.0]:
 # 径向求交方程的中间量示例
 print()
 print("径向求交方程中间量示例：(1-A^2)t^2 - 4pA t + 4p(B-p) = 0，B = -0.534R = %.6f" % (-0.534 * R))
-print("  判别式 Δ = 16p(p - B(1-A^2))，取根 t = (4pA + sqrt(Δ)) / (2(1-A^2))，δ̂ = R_i - t")
+print("  判别式 Δ = 16p(p - B(1-A^2))，取根 t = (4pA + sqrt(Δ)) / (2(1-A^2))，delta_hat = R_i - t")
 for tg in [0.0, 30.0, 60.0, 90.0, 120.0, 145.0]:
     j = int(np.argmin(np.abs(dist - tg)))
     u = pos[ap2[j]] / rad[ap2[j]]
@@ -134,5 +134,5 @@ for tg in [0.0, 30.0, 60.0, 90.0, 120.0, 145.0]:
     a2_ = 1 - A ** 2
     disc = 16 * p2 * (p2 - B * a2_)
     t = (4 * p2 * A + np.sqrt(disc)) / (2 * a2_) if a2_ > 1e-12 else (B - p2) / A
-    print("  d=%6.1f m: A=u·n=%9.6f, 1-A^2=%8.6f, Δ=%12.4f, t=%10.6f m, δ̂=%+9.4f mm"
+    print("  d=%6.1f m: A=u·n=%9.6f, 1-A^2=%8.6f, Δ=%12.4f, t=%10.6f m, delta_hat=%+9.4f mm"
           % (dist[j], A, a2_, disc, t, (rad[ap2[j]] - t) * 1000))

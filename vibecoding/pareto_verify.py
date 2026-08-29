@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-"""帕累托前沿验证脚本：从 p_sensitivity 扫描结果求 (RMS, η) 的帕累托前沿。
+"""帕累托前沿验证脚本：从 p_sensitivity 扫描结果求 (RMS, eta) 的帕累托前沿。
 
-目标：RMS 越小越好、接收比 η 越大越好。
+目标：RMS 越小越好、接收比 eta 越大越好。
 判据：若 A.rms <= B.rms 且 A.eta >= B.eta 且至少一者严格不等，则 A 支配 B。
       不被任何其他点支配的点构成帕累托前沿。
 
@@ -28,7 +28,7 @@ SCAN = [
 
 
 def dominates(a, b):
-    """a 是否支配 b（a 在 RMS 与 η 两维度都不劣于 b 且至少一维严格更优）。"""
+    """a 是否支配 b（a 在 RMS 与 eta 两维度都不劣于 b 且至少一维严格更优）。"""
     rms_a, eta_a = a
     rms_b, eta_b = b
     le = rms_a <= rms_b
@@ -59,29 +59,29 @@ def pareto_front(points):
 
 def main():
     print("=" * 78)
-    print("帕累托前沿验证（RMS 越小越好，η 越大越好）")
+    print("帕累托前沿验证（RMS 越小越好，eta 越大越好）")
     print("=" * 78)
     print(f"输入点数：{len(SCAN)}")
-    print(f"{'p (m)':>10} {'RMS (mm)':>12} {'η':>10} {'是否前沿':>10}")
+    print(f"{'p (m)':>10} {'RMS (mm)':>12} {'eta':>10} {'是否前沿':>10}")
     print("-" * 78)
 
     front_idx = pareto_front(SCAN)
 
     for i, (p, rms, eta) in enumerate(SCAN):
-        flag = "✓ 前沿" if i in front_idx else "  劣"
+        flag = "[ok] 前沿" if i in front_idx else "  劣"
         print(f"{p:>10.4f} {rms:>12.3f} {eta:>10.6f} {flag:>10}")
 
     print("-" * 78)
     print(f"\n帕累托前沿共 {len(front_idx)} 个点：")
     for i in front_idx:
         p, rms, eta = SCAN[i]
-        print(f"  p = {p:.4f} m  →  RMS = {rms:.3f} mm,  η = {eta:.6f}")
+        print(f"  p = {p:.4f} m  →  RMS = {rms:.3f} mm,  eta = {eta:.6f}")
 
     # 验证论文中给出的三点前沿公式 eq:pareto
     print("\n论文 eq:pareto 给出的三点：")
     paper_front = [(51.47, 0.3414), (54.92, 0.3804), (72.98, 0.4942)]
     for rms, eta in paper_front:
-        print(f"  RMS = {rms:.2f} mm,  η = {eta:.4f}")
+        print(f"  RMS = {rms:.2f} mm,  eta = {eta:.4f}")
 
     # 对比
     print("\n一致性检验：")
@@ -91,7 +91,7 @@ def main():
             for c in code_metrics)
         for p in paper_front
     )
-    print(f"  代码前沿与论文前沿数值匹配：{'✓ 一致' if match else '✗ 不一致'}")
+    print(f"  代码前沿与论文前沿数值匹配：{'[ok] 一致' if match else '[fail] 不一致'}")
 
     # 相对差异检验（验证 6.7%/11.4% 与 32.9%/29.9%）
     print("\n前沿段相对差异检验：")
@@ -102,7 +102,7 @@ def main():
         rel_rms = d_rms / pts[k][0] * 100
         rel_eta = d_eta / pts[k][1] * 100
         print(f"  段 {k + 1}: ΔRMS = {d_rms:.2f} mm ({rel_rms:.1f}%), "
-              f"Δη = {d_eta:.4f} ({rel_eta:.1f}%)")
+              f"Δeta = {d_eta:.4f} ({rel_eta:.1f}%)")
 
 
 if __name__ == "__main__":

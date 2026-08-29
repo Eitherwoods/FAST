@@ -3,9 +3,9 @@
 
 检查项：
 1. 工作表齐全、口径内节点数与附件1一致；
-2. 促动器伸缩量 |x| ≤ 0.6 m，口径外为 0；
+2. 促动器伸缩量 |x| <= 0.6 m，口径外为 0；
 3. 调整后节点坐标与“基准位置沿径向移动伸缩量”自洽；
-4. 相邻节点间距相对变化 ≤ 0.07%（含口径边界处的跨接边）；
+4. 相邻节点间距相对变化 <= 0.07%（含口径边界处的跨接边）；
 5. 理想抛物面顶点落在观测轴上，焦距落在搜索区间内。
 """
 import sys
@@ -62,7 +62,7 @@ def main():
     print(f"节点坐标表 {len(rows2)} 行（口径内节点 {n_ap} 个）{'OK' if ok_count else '行数不符'}")
 
     ext_max = float(np.abs(ext).max())
-    print(f"  [3] |伸缩量| ≤ 0.6 m：最大 = {ext_max:.6f} m "
+    print(f"  [3] |伸缩量| <= 0.6 m：最大 = {ext_max:.6f} m "
           f"{'OK' if ext_max <= EXT_LIMIT else '不满足'}")
     out_zeros = int(np.abs(ext[~in_ap]).max())
     print(f"  [4] 口径外节点伸缩量为 0：{'OK' if out_zeros == 0 else '存在非零值'}")
@@ -79,7 +79,7 @@ def main():
     L0 = np.linalg.norm(pos[ctx["ie"]] - pos[ctx["je"]], axis=1)
     L1 = np.linalg.norm(pos_adj[ctx["ie"]] - pos_adj[ctx["je"]], axis=1)
     rel = np.abs(L1 - L0) / L0
-    print(f"  [6] 相邻节点间距相对变化 ≤ 0.07%（{rel.size} 条边，含口径边界跨接边）："
+    print(f"  [6] 相邻节点间距相对变化 <= 0.07%（{rel.size} 条边，含口径边界跨接边）："
           f"最大 = {rel.max() * 100:.5f}% "
           f"{'OK' if cm.is_feasible(ext[in_ap], ctx) else '不满足'}")
 

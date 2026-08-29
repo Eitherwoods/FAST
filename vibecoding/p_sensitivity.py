@@ -80,7 +80,7 @@ def main():
     out = Path(__file__).resolve().parent / "p_sensitivity_result.txt"
     with open(out, "w", encoding="utf-8") as f:
         f.write("焦距 p 敏感性分析\n")
-        f.write(f"基准球面半径 R = {R:.4f} m，α = {ALPHA_Q2}°，β = {BETA_Q2}°\n")
+        f.write(f"基准球面半径 R = {R:.4f} m，alpha = {ALPHA_Q2}°，beta = {BETA_Q2}°\n")
         f.write(f"接收比采样阶数 m = {SAMPLE_M}（每面板 {SAMPLE_M * (SAMPLE_M + 1) // 2} 点）\n\n")
         f.write(head + "\n" + "-" * len(head) + "\n")
         for p, ec, rms, xm, rel, eta in rows:

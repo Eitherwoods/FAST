@@ -23,9 +23,9 @@ print("=" * 68)
 print("result.xlsx 促动器伸缩量统计")
 print("=" * 68)
 print("总行数 = %d，非零行数（口径内）= %d" % (ext.size, int((np.abs(ext) > 0).sum())))
-print("范围 = [%.6f, %.6f] m，|δ|max = %.6f m，均值 = %.6f mm（仅非零）"
+print("范围 = [%.6f, %.6f] m，|delta|max = %.6f m，均值 = %.6f mm（仅非零）"
       % (ext.min(), ext.max(), np.abs(ext).max(), ext[np.abs(ext) > 0].mean() * 1000))
-print("|δ| ≤ 0.6 m：%s" % ("满足" if np.abs(ext).max() <= 0.6 else "不满足"))
+print("|delta| <= 0.6 m：%s" % ("满足" if np.abs(ext).max() <= 0.6 else "不满足"))
 
 # ---------------- 落点分布 ----------------
 adj = Q3.load_adjustment()
@@ -83,4 +83,4 @@ for tag, verts, centers in [("调节后", verts_adj, centers_adj),
     print("   加权分位数 |Q-P|：P10=%.4f  P25=%.4f  P50=%.4f  P75=%.4f  P90=%.4f  (m)"
           % tuple(qs))
     print("   落点 |Q-P| 最大值 = %.4f m" % d.max())
-    print("   累积能量占比：" + "  ".join("≤%gm:%.4f" % (k, v) for k, v in inside_r.items()))
+    print("   累积能量占比：" + "  ".join("<=%gm:%.4f" % (k, v) for k, v in inside_r.items()))

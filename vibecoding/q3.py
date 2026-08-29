@@ -8,11 +8,11 @@
       r = -n + 2(n·N)N
   反射线与过焦点 P、垂直 n 的接收平面交于
       Q = M + t r，t = (P-M)·n / (r·n)
-  当 |Q-P| ≤ 0.5 m 时该面元的反射信号被馈源舱有效区域接收。
+  当 |Q-P| <= 0.5 m 时该面元的反射信号被馈源舱有效区域接收。
 - 接收比 = 被接收面元的投影面积之和 / 全部面元的投影面积之和，
   面元按 |N·n|·dS（投影面积）计权，用三角形重心坐标网格采样数值积分。
 - 基准反射球面：球心在原点，同样方法计算接收比作为对照。
-- 验证：对理想抛物面直接采样做射线追踪，接收比应≈1。
+- 验证：对理想抛物面直接采样做射线追踪，接收比应~=1。
 """
 import sys
 
@@ -34,7 +34,7 @@ CONV_M = (10, 20, 30)    # 采样阶数收敛性检验
 def trace_ratio(verts, centers, R, n, P, bary):
     """顶点 (K,3,3)、球心 (K,3) 的面板集合的接收比。
 
-    仅统计落在 300 m 照明区内（到观测轴距离 ≤150 m）的采样点：口径边界处的
+    仅统计落在 300 m 照明区内（到观测轴距离 <=150 m）的采样点：口径边界处的
     面板只有部分位于照明区内，按采样点逐点剔除，避免漏计边缘一圈面板的投影面积。
 
     返回 (接收比, 照明区内总投影面积)。后者用于检验 300 m 口径的面板覆盖率。
@@ -49,7 +49,7 @@ def trace_ratio(verts, centers, R, n, P, bary):
     O = np.repeat(centers, Sn, axis=0)
     w_area = np.repeat(areas / Sn, Sn)
 
-    # 照明区掩膜：采样点到观测轴（过 C 沿 n）的距离 ≤ 150 m
+    # 照明区掩膜：采样点到观测轴（过 C 沿 n）的距离 <= 150 m
     rho = np.linalg.norm(M - np.outer(M @ n, n), axis=1)
     keep = rho <= APERTURE_RADIUS
 
@@ -67,7 +67,7 @@ def trace_ratio(verts, centers, R, n, P, bary):
 
 
 def ideal_paraboloid_ratio(R, n, p, P, V):
-    """理想抛物面接收比（模型自洽性验证，应≈1）。"""
+    """理想抛物面接收比（模型自洽性验证，应~=1）。"""
     e1 = np.cross(n, [0.0, 0.0, 1.0])
     if np.linalg.norm(e1) < 1e-8:
         e1 = np.array([1.0, 0.0, 0.0])
@@ -134,7 +134,7 @@ def main():
     lines = ["问题三接收比计算结果",
              "",
              f"基准球面半径 R = {R:.4f} m",
-             f"观测方向 α = {ALPHA}°, β = {BETA}°",
+             f"观测方向 alpha = {ALPHA}°, beta = {BETA}°",
              f"调节方案来源：{adj['source']}（第 2 问提交结果）",
              f"最优焦距 p = {adj['p']:.4f} m",
              f"馈源舱（焦点）P = ({adj['focus'][0]:.4f}, {adj['focus'][1]:.4f}, {adj['focus'][2]:.4f}) m",
@@ -174,7 +174,7 @@ def main():
 
     disk = np.pi * APERTURE_RADIUS ** 2
     lines += [f"总投影面积：调节后 = {area_adj:.2f} m²，基准球面 = {area_base:.2f} m²，"
-              f"π·150² = {disk:.2f} m²",
+              f"pi·150² = {disk:.2f} m²",
               f"300 m 口径覆盖率：调节后 = {area_adj / disk * 100:.2f}%，"
               f"基准球面 = {area_base / disk * 100:.2f}%",
               "",
