@@ -6,6 +6,10 @@
 \usetikzlibrary{positioning, arrows.meta, calc, shapes.geometric}
 \captionsetup{font=small}
 \newtheorem{proposition}{命题}
+% 图题下方的补充说明：用灰色小字与标题分开，且区别于正文
+\usepackage{xcolor}
+\definecolor{noteGray}{gray}{0.45}
+\newcommand{\figexp}[1]{\par\vspace{3pt}{\footnotesize\color{noteGray} 说明：#1}\par\vspace{5pt}}
 % 放宽浮动体放置限制，减少图表造成的整页空白
 \renewcommand{\topfraction}{0.92}
 \renewcommand{\bottomfraction}{0.85}
@@ -88,14 +92,14 @@ FAST主动反射面的形状调节，本质是在促动器行程与索网受力�
 \begin{tikzpicture}[
     node distance=0.62cm and 0.5cm,
     box/.style={rectangle, draw=black!55, fill=blue!6, rounded corners=2pt,
-                minimum width=3.5cm, minimum height=0.72cm, align=center, font=\small},
+                minimum width=1cm, minimum height=0.72cm, align=center, font=\small},
     bbox/.style={rectangle, draw=black!55, fill=gray!10, rounded corners=2pt,
-                 minimum width=11.4cm, minimum height=0.62cm, align=center, font=\small},
+                 minimum width=1cm, minimum height=0.62cm, align=center, font=\small},
     io/.style={rectangle, draw=black!55, fill=green!7, rounded corners=2pt,
-               minimum width=3.5cm, minimum height=0.72cm, align=center, font=\small},
+               minimum width=1cm, minimum height=0.72cm, align=center, font=\small},
     arr/.style={-{Stealth[length=2.4mm]}, thick, draw=black!65}
 ]
-\node[bbox] (s0) {附件1--3：节点坐标、邻接关系、面板构成\quad$\rightarrow$\quad $R=300.4000\,\mathrm{m}$、索网边 $6525$ 条};
+\node[bbox] (s0) {节点坐标、邻接关系、面板构成\quad$\rightarrow$\quad $R=300.4\,\mathrm{m}$、索网边 $6525$ 条};
 
 \node[box, below=of s0, yshift=-0.02cm] (s1) {观测轴 $\mathbf{n}$、焦点 $P=-0.534R\mathbf{n}$};
 \node[box, right=0.72cm of s1] (s2) {理想抛物面一般方程\\$|\mathbf{CM}-\mathbf{CP}|=(\mathbf{CM}-\mathbf{CP})\cdot\mathbf{n}+2p$};
@@ -118,18 +122,20 @@ FAST主动反射面的形状调节，本质是在促动器行程与索网受力�
 \draw[arr] (s0.east) -| (s2.north);
 \draw[arr] (s0.west) -| (s3.north);
 \draw[arr] (s1) -- (s4);
-\draw[arr] (s2) |- (s4);
-\draw[arr] (s3) |- (s4);
+\draw[arr] (s2) -- (s4);
+\draw[arr] (s3) -- (s4);
 \draw[arr] (s4) -- (s5);
 \draw[arr] (s4) -- (s6);
-\draw[arr] (s4.east) -| (s7.north);
+\draw[arr] (s4) -- (s7);
 \draw[arr] (s6) -- (s8);
 \draw[arr] (s8) -- (s9);
 \draw[arr] (s8) -- (s10);
-\draw[arr] (s9) |- (s11);
-\draw[arr] (s10) |- (s11);
+\draw[arr] (s9) -- (s11);
+\draw[arr] (s10) -- (s11);
 \end{tikzpicture}
-\caption{本文总体技术路线。灰色横条为三问共用的几何底座与最终输出，蓝色框为各环节的核心模型。}\label{fig:flowchart}
+\caption{本文总体技术路线}
+\figexp{灰色横条为三问共用的几何底座与最终输出，蓝色框为各环节的核心模型。}
+\label{fig:flowchart}
 \end{figure}
 
 % ==================== 模型假设 ====================
@@ -544,7 +550,8 @@ V=(0,\,0,\,-0.534R-p^{*}),\qquad P=(0,\,0,\,-0.534R)=(0,\,0,\,-160.4136)\,\mathr
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.86\textwidth]{../figures/fig_scheme_compare.pdf}
-    \caption{三种调节方案的残差比较（$p^* = 140.3743$\,m）。方案一节点残差RMS最小（51.5\,mm）；方案二、三分别将面板中心残差与整面板积分残差进一步降低至42.6\,mm、43.6\,mm，但节点残差略有上升，且各方案差异均在2.5\%以内，最终采用方案一。}
+    \caption{三种调节方案的残差比较（$p^* = 140.3743$\,m）}
+    \figexp{方案一节点残差RMS最小（51.5\,mm）；方案二、三分别将面板中心残差与整面板积分残差进一步降低至42.6\,mm、43.6\,mm，但节点残差略有上升，且各方案差异均在2.5\%以内，最终采用方案一。}
     \label{fig:scheme_compare}
 \end{figure}
 
@@ -613,7 +620,8 @@ D249 & $145.053$ & $-229.05$ & $-201.97$ & $27.07$ \\
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.78\textwidth]{../figures/fig_extension_field.pdf}
-    \caption{问题二伸缩量分布（$p^* = 140.3743$\,m，692 个口径内节点）。灰色为理想抛物面对应的径向伸缩量$\hat\delta_i$（不可行），蓝色为约束下嵌套联合优化的可行解$\delta_i^{*}$；红色虚线为促动器行程限幅$\pm0.6$\,m。可见理想解沿$\rho$呈三段式分布，而可行解被索长约束``压平''并分段常值化。}
+    \caption{问题二伸缩量分布（$p^* = 140.3743$\,m，692 个口径内节点）}
+\figexp{灰色为理想抛物面对应的径向伸缩量$\hat\delta_i$（不可行），蓝色为约束下嵌套联合优化的可行解$\delta_i^{*}$；红色虚线为促动器行程限幅$\pm0.6$\,m。可见理想解沿$\rho$呈三段式分布，而可行解被索长约束``压平''并分段常值化。}
     \label{fig:extension_field}
 \end{figure}
 
@@ -735,7 +743,8 @@ A_{\mathrm{total}}=\sum_{k\in\mathcal{K}}\ \int_{S_k}|N(M)\cdot\mathbf{n}|\,\mat
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.84\textwidth]{../figures/fig_spot_pattern.pdf}
-    \caption{接收平面内反射光落点分布（接收平面过馈源舱$P$、垂直于观测轴$\mathbf{n}$；馈源舱有效区域为以$P$为圆心、半径 0.5\,m 的圆盘）。左图为基准反射球面：落点散布范围约 $\pm 30$\,m，接收比 $\eta = 0.053$；右图为第 2 问调节后的反射面：落点显著向圆心聚集，$\eta = 0.340$，是基准的 6.5 倍，验证了调节方案的有效性。}
+    \caption{接收平面内反射光落点分布（接收平面过馈源舱$P$、垂直于观测轴$\mathbf{n}$；馈源舱有效区域为以$P$为圆心、半径 0.5\,m 的圆盘）}
+\figexp{左图为基准反射球面：落点散布范围约 $\pm 30$\,m，接收比 $\eta = 0.053$；右图为第 2 问调节后的反射面：落点显著向圆心聚集，$\eta = 0.340$，是基准的 6.5 倍，验证了调节方案的有效性。}
     \label{fig:spot_pattern}
 \end{figure}
 
@@ -840,7 +849,8 @@ $141.00$ & $459.69$ & $251.93$ & $0.0191$ \\
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.86\textwidth]{../figures/fig_p_sensitivity.pdf}
-    \caption{焦距$p$敏感性分析（方案一目标）。左轴蓝线为残差 RMS，$p = 140.37$\,m 时取最小值 51.5\,mm（贴近优先）；右轴橙线为接收比 $\eta$，$p \approx 140.45$\,m 时取最大值 $\eta = 0.494$（接收优先）。本作品主方案按题面``尽量贴近''采用贴近优先，$p^* = 140.3743\,\mathrm{m}$。}
+    \caption{焦距$p$敏感性分析（方案一目标）}
+\figexp{左轴蓝线为残差 RMS，$p = 140.37$\,m 时取最小值 51.5\,mm（贴近优先）；右轴橙线为接收比 $\eta$，$p \approx 140.45$\,m 时取最大值 $\eta = 0.494$（接收优先）。本作品主方案按题面``尽量贴近''采用贴近优先，$p^* = 140.3743\,\mathrm{m}$。}
     \label{fig:p_sensitivity}
 \end{figure}
 
@@ -954,7 +964,8 @@ $141.00$ & $459.69$ & $251.93$ & $0.0191$ \\
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.68\textwidth]{../figures/fig_inner_solver.pdf}
-    \caption{内层求解器对照（问题二方向，$p = 140.3743$\,m，方案一目标，口径内 692 节点）。罚函数法与坐标下降法分别得到 66.81\,mm 与 66.13\,mm 的残差 RMS（后者增至 300 轮仍为 66.13\,mm，已收敛到自己的局部最优），而本文采用的混合多起点策略以罚函数解为初值、再用多顺序坐标下降跳出该局部极小，残差降至 51.53\,mm，相对较优的单一方法改善 22.1\%。}
+    \caption{内层求解器对照（问题二方向，$p = 140.3743$\,m，方案一目标，口径内 692 节点）}
+\figexp{罚函数法与坐标下降法分别得到 66.81\,mm 与 66.13\,mm 的残差 RMS（后者增至 300 轮仍为 66.13\,mm，已收敛到自己的局部最优），而本文采用的混合多起点策略以罚函数解为初值、再用多顺序坐标下降跳出该局部极小，残差降至 51.53\,mm，相对较优的单一方法改善 22.1\%。}
     \label{fig:inner_solver}
 \end{figure}
 
