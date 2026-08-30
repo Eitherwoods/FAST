@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-"""实验 1：内层 QCQP 的全局最优性对照（问题二方向，固定 p=140.3743 m）。
+"""实验 1：内层 QCQP 的全局最优性对照（问题二方向，固定 p=140.3839 m）。
 
-对照三个求解途径，回答"混合多起点解 51.5 mm 是否接近全局最优"：
+对照三个求解途径，回答"混合多起点解 52.2 mm 是否接近全局最优"：
   A. 混合多起点（论文采用的 fit_best）
   B. 30 个随机种子的坐标下降统计（min/mean/max）
   C. scipy SLSQP 直接求解原非凸 QCQP（两个起点：clip(e) 与混合解精修）
@@ -16,7 +16,7 @@ from common import (ALPHA_Q2, BETA_Q2, axis_vector, load_data,
                     radial_extensions, is_feasible, fit_best,
                     fit_coordinate_descent)
 
-P_FIX = 140.3743
+P_FIX = 140.3839
 
 
 def main():

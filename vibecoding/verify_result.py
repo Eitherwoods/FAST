@@ -4,9 +4,10 @@
 检查项：
 1. 工作表齐全、口径内节点数与附件1一致；
 2. 促动器伸缩量 |x| <= 0.6 m，口径外为 0；
-3. 调整后节点坐标与“基准位置沿径向移动伸缩量”自洽；
+3. 调整后节点坐标与"基准位置沿附件2 促动器方向移动伸缩量"自洽；
 4. 相邻节点间距相对变化 <= 0.07%（含口径边界处的跨接边）；
-5. 理想抛物面顶点落在观测轴上，焦距落在搜索区间内。
+5. 理想抛物面顶点落在观测轴上，焦距落在搜索区间内；
+6. 附件2 几何自洽：下拉索长度相对变化 ≈ 0，促动器方向与径向反向共线。
 """
 import sys
 
@@ -67,15 +68,15 @@ def main():
     out_zeros = int(np.abs(ext[~in_ap]).max())
     print(f"  [4] 口径外节点伸缩量为 0：{'OK' if out_zeros == 0 else '存在非零值'}")
 
-    # 口径内节点：坐标与径向自洽性
-    u = pos[in_ap] / np.linalg.norm(pos[in_ap], axis=1)[:, None]
-    expect = u * (np.linalg.norm(pos[in_ap], axis=1) - ext[in_ap])[:, None]
+    # 口径内节点：坐标与附件2 促动器方向 act_dir 自洽
+    ctx = build_context(pos, panels, n)
+    act_dir = ctx["act_dir"]
+    expect = pos[in_ap] + ext[in_ap, None] * act_dir[in_ap]
     dev = float(np.abs(pos_adj[in_ap] - expect).max())
-    print(f"  [5] 节点沿径向变位自洽：坐标最大偏差 = {dev:.2e} m "
+    print(f"  [5] 节点沿附件2 act_dir 变位自洽：坐标最大偏差 = {dev:.2e} m "
           f"{'OK' if dev < 1e-5 else '不满足'}")
 
     # ---- 边长约束 ----
-    ctx = build_context(pos, panels, n)
     L0 = np.linalg.norm(pos[ctx["ie"]] - pos[ctx["je"]], axis=1)
     L1 = np.linalg.norm(pos_adj[ctx["ie"]] - pos_adj[ctx["je"]], axis=1)
     rel = np.abs(L1 - L0) / L0
@@ -83,9 +84,23 @@ def main():
           f"最大 = {rel.max() * 100:.5f}% "
           f"{'OK' if cm.is_feasible(ext[in_ap], ctx) else '不满足'}")
 
+    # ---- 附件2 几何自洽性（独立第七项校核）----
+    chk = cm.check_attachment2(ext[in_ap], ctx)
+    print(f"  [7] 附件2 几何自洽：")
+    print(f"      下拉索长度相对变化：均值 {chk['pull_rod_rel_mean']*100:.6f}%，"
+          f"最大 {chk['pull_rod_rel_max']*100:.6f}%，"
+          f"超 0.07% 个数 {chk['pull_rod_violations']} "
+          f"{'OK' if chk['pull_rod_violations'] == 0 else '不满足'}")
+    print(f"      工作态促动器长度：[{chk['L_act_min']:.4f}, {chk['L_act_max']:.4f}] m "
+          f"（基准均值 {chk['L_act_0_mean']:.4f} m，行程 ±{EXT_LIMIT}）")
+    print(f"      促动器方向 vs 径向反向：均值 {chk['act_radial_ang_mean']:.4f}°，"
+          f"最大 {chk['act_radial_ang_max']:.4f}° "
+          f"{'OK' if chk['act_radial_ang_max'] < 1.0 else '存在偏离'}")
+
     ok = (axis_err < 1e-6 and cm.P_BOUNDS[0] <= p_from_v <= cm.P_BOUNDS[1]
           and ok_sheet3 and ok_count and ext_max <= EXT_LIMIT and out_zeros == 0
-          and dev < 1e-5 and cm.is_feasible(ext[in_ap], ctx))
+          and dev < 1e-5 and cm.is_feasible(ext[in_ap], ctx)
+          and chk["pull_rod_violations"] == 0)
     print("\n结论：" + ("全部约束满足，result.xlsx 可用于提交。" if ok else "存在未满足项。"))
     return 0 if ok else 1
 

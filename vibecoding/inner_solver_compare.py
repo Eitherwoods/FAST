@@ -27,6 +27,7 @@ def report(tag, ctx, pos, p):
         ok = "" if rel <= cm.EDGE_TOL * (1 + 1e-9) else "  <- 违反约束"
         print(f"  {name:<16} 残差 RMS = {rms * 1000:8.4f} mm   "
               f"|x| 最大 = {ext * 1000:7.2f} mm   边长最大相对变化 = {rel * 100:.5f}%{ok}")
+    return rows
 
 
 def main():
@@ -36,8 +37,22 @@ def main():
     # 问题二、三的观测方向
     n = cm.axis_vector(cm.ALPHA_Q2, cm.BETA_Q2)
     ctx = cm.build_context(pos, panels, n)
+
+    # 论文主表：p=140.3839 m（问题二方向），结果保存到文件
+    rows_main = report("问题二/三 主表", ctx, pos, 140.3839)
+    with open("inner_solver_compare_result.txt", "w", encoding="utf-8") as fh:
+        fh.write(f"内层求解器对照（问题二方向，p=140.3839 m，"
+                 f"口径内 {ctx['nap']} 节点、{ctx['ie'].size} 条边）\n")
+        fh.write(f"{'求解器':<20} {'残差RMS(mm)':>12} {'|x|max(mm)':>12} "
+                 f"{'边长最大相对变化(%)':>20}\n")
+        for name, rms, rel, ext in rows_main:
+            fh.write(f"{name:<20} {rms * 1000:>12.4f} {ext * 1000:>12.2f} "
+                     f"{rel * 100:>20.5f}\n")
+    print("结果已保存至 inner_solver_compare_result.txt")
+
+    # 额外焦距对照（论文正文"在 p∈{140.30,140.40,140.50} 三个额外焦距上重复"）
     for p in (140.30, 140.40, 140.50):
-        report("问题二/三", ctx, pos, p)
+        report("问题二/三 额外", ctx, pos, p)
 
     # 问题一的观测方向（正上方）
     n1 = cm.axis_vector(0.0, 90.0)
