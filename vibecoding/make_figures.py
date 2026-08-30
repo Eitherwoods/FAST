@@ -79,7 +79,7 @@ def fig_p_sensitivity():
     ax1.tick_params(axis="y", labelcolor=C_BLUE)
     ax1.set_ylim(0, 700)
     i_fit = int(np.argmin(rms))
-    ax1.annotate("贴近优先：RMS 最小\np=140.3743, eta=0.341",
+    ax1.annotate("贴近优先：RMS 最小\np=140.3839, eta=0.357",
                  xy=(p[i_fit], rms[i_fit]), xytext=(140.45, 330),
                  fontsize=9, color=C_BLUE,
                  arrowprops=dict(arrowstyle="->", color=C_BLUE, lw=1))
@@ -206,7 +206,7 @@ def fig_scheme_compare():
         ax.bar_label(bars, fmt="%.2f", fontsize=8, padding=1)
     ax.set_xticks(x, labels)
     ax.set_ylabel("残差 RMS (mm)")
-    ax.set_title("三种调节方案的残差比较（p* = 140.3743 m）", fontsize=11)
+    ax.set_title("三种调节方案的残差比较（p* = 140.3839 m）", fontsize=11)
     ax.legend(fontsize=9)
     ax.grid(axis="y", alpha=0.25, lw=0.5)
     ax.set_ylim(0, 55)
@@ -220,7 +220,7 @@ def fig_inner_solver():
     names, pos, panels = load_data()
     n = axis_vector(ALPHA_Q2, BETA_Q2)
     ctx = build_context(pos, panels, n)
-    p = 140.3743
+    p = 140.3839
     e_ap, _, _ = radial_extensions(pos[ctx["in_ap"]], n, p, ctx["R"])
     rms = lambda x: float(np.sqrt(np.mean((x - e_ap) ** 2)) * 1000)
     vals = [rms(fit_penalty(ctx, e_ap)),

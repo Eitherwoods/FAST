@@ -45,7 +45,11 @@ ALPHA_Q2, BETA_Q2 = 36.795, 78.169   # 问题二、三的观测方向
 # ---------- 数据 ----------
 
 def load_data():
-    """加载附件1（主索节点坐标）与附件3（反射面板顶点编号）。"""
+    """加载附件1（主索节点坐标）与附件3（反射面板顶点编号）。
+
+    附件2（促动器几何）不在此处返回，由 ``get_actuator_geometry`` 单独缓存，
+    供 ``build_context`` 在构造上下文时一次性对齐到附件1 节点顺序。
+    """
     df1 = pd.read_csv(DATA / "附件1.csv", encoding="gbk")
     names = df1.iloc[:, 0].astype(str).tolist()
     pos = df1.iloc[:, 1:4].to_numpy(dtype=float)
@@ -53,6 +57,41 @@ def load_data():
     idx = {nm: i for i, nm in enumerate(names)}
     panels = df3.iloc[:, 0:3].apply(lambda s: s.map(idx)).to_numpy(dtype=int)
     return names, pos, panels
+
+
+# 促动器几何缓存（act_dir, L_act_0, pos_upper, pos_lower），避免重复读附件2
+_ACT_GEOM_CACHE = None
+
+
+def get_actuator_geometry():
+    """加载附件2：促动器几何，按附件1 节点顺序对齐返回。
+
+    附件2 每行字段：对应主索节点编号 + 下端点（地锚）XYZ + 基准态上端点（顶端）XYZ。
+    促动器方向 act_dir = (上端 - 下端)/|...|，实测严格沿基准球面径向反向
+    （夹角均值 179.92°），即指向球心方向；下拉索 = 节点 - 上端，长度固定不变。
+
+    返回 (act_dir, L_act_0, pos_upper, pos_lower)，均按附件1 节点索引排列。
+    """
+    global _ACT_GEOM_CACHE
+    if _ACT_GEOM_CACHE is not None:
+        return _ACT_GEOM_CACHE
+    df1 = pd.read_csv(DATA / "附件1.csv", encoding="gbk")
+    names1 = df1.iloc[:, 0].astype(str).tolist()
+    idx1 = {nm: i for i, nm in enumerate(names1)}
+    df2 = pd.read_csv(DATA / "附件2.csv", encoding="gbk")
+    names2 = df2.iloc[:, 0].astype(str).tolist()
+    pos_lower = df2.iloc[:, 1:4].to_numpy(dtype=float)
+    pos_upper = df2.iloc[:, 4:7].to_numpy(dtype=float)
+    # 附件2 行顺序未必与附件1 一致，按"对应主索节点编号"在附件1 中的索引重排
+    node_idx = np.array([idx1[nm] for nm in names2])
+    order = np.argsort(node_idx)
+    pos_lower = pos_lower[order]
+    pos_upper = pos_upper[order]
+    act_vec = pos_upper - pos_lower
+    L_act_0 = np.linalg.norm(act_vec, axis=1)
+    act_dir = act_vec / L_act_0[:, None]
+    _ACT_GEOM_CACHE = (act_dir, L_act_0, pos_upper, pos_lower)
+    return _ACT_GEOM_CACHE
 
 
 def axis_vector(alpha_deg, beta_deg):
@@ -128,9 +167,13 @@ def triangle_bary(m):
 # ---------- 调节上下文（口径、边几何、关联关系） ----------
 
 def build_context(pos, panels, n, radius=APERTURE_RADIUS, tol=EDGE_TOL_SOLVE):
-    """预计算照明区掩码、边约束几何与节点-边/面板关联。
+    """预计算照明区掩码、边约束几何、促动器几何与节点-边/面板关联。
 
     tol 为求解用的边长容差，默认略紧于 EDGE_TOL，以吸收结果文件的舍入误差。
+
+    促动器方向 act_dir 来自附件2（指向球心方向），用于严格按附件2 几何移动节点：
+    节点工作态位置 = pos + δ·act_dir。下拉索长度随之严格保持不变
+    （附件2 给定 act_dir 与基准球面径向反向共线，故与原径向假设数值等价）。
     """
     R = np.linalg.norm(pos, axis=1).mean()
     dist_to_axis = np.linalg.norm(pos - np.outer(pos @ n, n), axis=1)
@@ -138,6 +181,12 @@ def build_context(pos, panels, n, radius=APERTURE_RADIUS, tol=EDGE_TOL_SOLVE):
     ap_idx = np.where(in_ap)[0]
     nap = ap_idx.size
     R_all = np.linalg.norm(pos, axis=1)
+
+    # 附件2 促动器几何（act_dir 与 R_all 反向共线，但用附件2 实际方向更严谨）
+    act_dir, L_act_0, pos_upper, pos_lower = get_actuator_geometry()
+    # 下拉索：上端 → 主索节点（基准态），长度固定不变
+    pull_vec = pos - pos_upper
+    L_pull_0 = np.linalg.norm(pull_vec, axis=1)
 
     edges = mesh_edges(panels)
     em = in_ap[edges[:, 0]] | in_ap[edges[:, 1]]   # 含口径边界处的跨接边
@@ -164,63 +213,109 @@ def build_context(pos, panels, n, radius=APERTURE_RADIUS, tol=EDGE_TOL_SOLVE):
         for v in pnl:
             node_panels[v].append(k)
 
-    return dict(R=R, n=n, radius=radius, in_ap=in_ap, ap_idx=ap_idx, nap=nap,
-                R_all=R_all, ie=ie, je=je, L0=L0, cospsi=cospsi,
+    return dict(R=R, n=n, N=len(pos), radius=radius, tol=tol,
+                in_ap=in_ap, ap_idx=ap_idx, nap=nap,
+                pos=pos, R_all=R_all, ie=ie, je=je, L0=L0, cospsi=cospsi,
                 sin2=np.maximum(1.0 - cospsi ** 2, 0.0),
                 Lmin=L0 * (1 - tol), Lmax=L0 * (1 + tol),
                 li=li, lj=lj, inc=[np.asarray(a, dtype=int) for a in inc],
                 ap_panels=ap_panels, panels_ap=panels_ap,
                 panels_ap_local=loc[panels_ap],
-                node_panels=[np.asarray(a, dtype=int) for a in node_panels])
+                node_panels=[np.asarray(a, dtype=int) for a in node_panels],
+                act_dir=act_dir, L_act_0=L_act_0,
+                pos_upper=pos_upper, pos_lower=pos_lower, L_pull_0=L_pull_0)
 
 
 def adjust_nodes(pos, x, ctx):
-    """由伸缩量 x（口径内节点）计算调节后的全部节点位置。"""
-    u = pos / ctx["R_all"][:, None]
+    """由伸缩量 x（口径内节点）计算调节后的全部节点位置。
+
+    节点沿附件2 促动器方向 act_dir 移动：pos' = pos + δ·act_dir。
+    δ > 0 表示促动器伸长、节点向球心移动（act_dir 实测指向球心）；
+    下拉索长度随之严格保持不变（附件2 几何自洽）。
+    """
     pos_adj = pos.copy()
-    pos_adj[ctx["ap_idx"]] = u[ctx["ap_idx"]] * (ctx["R_all"][ctx["ap_idx"]] - x)[:, None]
+    pos_adj[ctx["ap_idx"]] = pos[ctx["ap_idx"]] + x[:, None] * ctx["act_dir"][ctx["ap_idx"]]
     return pos_adj
 
 
 def max_rel_change(x, ctx):
-    """相邻节点间距相对变化（径向移动不改变径向夹角 psi）。"""
-    Rp = ctx["R_all"].copy()
-    Rp[ctx["ap_idx"]] -= x
-    L1 = np.sqrt(Rp[ctx["ie"]] ** 2 + Rp[ctx["je"]] ** 2
-                 - 2.0 * Rp[ctx["ie"]] * Rp[ctx["je"]] * ctx["cospsi"])
+    """相邻节点间距相对变化（基于附件2 act_dir 的通用坐标计算）。
+
+    节点工作态位置 = pos + δ·act_dir，直接由新坐标求边长，不再依赖
+    "径向移动不改变径向夹角 psi" 的余弦定理近似，故与附件2 几何严格自洽。
+    """
+    pos_adj = ctx["pos"].copy()
+    pos_adj[ctx["ap_idx"]] = ctx["pos"][ctx["ap_idx"]] + x[:, None] * ctx["act_dir"][ctx["ap_idx"]]
+    L1 = np.linalg.norm(pos_adj[ctx["ie"]] - pos_adj[ctx["je"]], axis=1)
     return np.abs(L1 - ctx["L0"]) / ctx["L0"]
 
 
-# ---------- 边约束的解析可行区间（坐标下降用） ----------
+# ---------- 边约束的解析可行区间（坐标下降用，基于附件2 act_dir） ----------
 
-def edge_interval_Rp(e, Rp_other, R_base, ctx):
-    """给定边 e 的对端半径与本端基线半径，返回本端半径的可行区间。
+def edge_interval_delta(e, this_end, delta_other, ctx):
+    """边 e 上本端节点 this_end 的 δ 可行区间（对端 δ = delta_other）。
 
-    边长约束 |L1-L0|/L0 <= tol 化为本端半径的区间（取含基线值的连通分量）。
+    基于 act_dir 的一般二次方程。设 d = pos_i - pos_j（本端减对端），
+    a_i, a_j 为两端 act_dir，则边长
+        L1² = |d + δ_i·a_i - δ_j·a_j|²
+            = δ_i² + 2·c1·δ_i + c0
+    其中
+        c1 = (a_i·d) - δ_j·(a_i·a_j)
+        c0 = L0² - 2·δ_j·(a_j·d) + δ_j²
+    边长容差 |L1-L0|/L0 ≤ tol 等价于 Lmin² ≤ (δ_i+c1)² + (c0-c1²) ≤ Lmax²，
+    化为 δ_i 的区间（取包含基线值 0 的连通分量）。
     """
-    c, s2 = ctx["cospsi"][e], ctx["sin2"][e]
-    base = Rp_other * c
-    d_hi = ctx["Lmax"][e] ** 2 - Rp_other ** 2 * s2
-    if d_hi < 0:
-        return -np.inf, np.inf   # 对端偏离过大，本端无法补救，不限制
-    r_lo, r_hi = base - np.sqrt(d_hi), base + np.sqrt(d_hi)
-    d_lo = ctx["Lmin"][e] ** 2 - Rp_other ** 2 * s2
-    if d_lo <= 0:
-        return r_lo, r_hi
-    s_lo, s_hi = base - np.sqrt(d_lo), base + np.sqrt(d_lo)
-    return (s_hi, r_hi) if R_base >= base else (r_lo, s_lo)
+    ie_arr, je_arr = ctx["ie"], ctx["je"]
+    other = je_arr[e] if ie_arr[e] == this_end else ie_arr[e]
+    ai = ctx["act_dir"][this_end]
+    aj = ctx["act_dir"][other]
+    d = ctx["pos"][this_end] - ctx["pos"][other]
+    L0 = ctx["L0"][e]
+    tol = ctx["tol"]
+    Lmin = L0 * (1 - tol)
+    Lmax = L0 * (1 + tol)
+
+    ai_d = float(ai @ d)
+    aj_d = float(aj @ d)
+    ai_aj = float(ai @ aj)
+    dj = float(delta_other)
+
+    c1 = ai_d - dj * ai_aj
+    c0 = L0 * L0 - 2.0 * dj * aj_d + dj * dj
+
+    # 上界 L1² ≤ Lmax²：(δ + c1)² ≤ Lmax² - c0 + c1²
+    R2_hi = Lmax * Lmax - c0 + c1 * c1
+    if R2_hi < 0:
+        # 对端已使边长超容差且本端无法补救，返回空区间（强迫本端 δ=0，由 is_feasible 过滤）
+        return 0.0, 0.0
+    root_hi = np.sqrt(R2_hi)
+    upper_lo = -c1 - root_hi
+    upper_hi = -c1 + root_hi
+
+    # 下界 L1² ≥ Lmin²：(δ + c1)² ≥ Lmin² - c0 + c1²
+    R2_lo = Lmin * Lmin - c0 + c1 * c1
+    if R2_lo <= 0:
+        return upper_lo, upper_hi            # 下界恒成立
+    root_lo = np.sqrt(R2_lo)
+    # 取包含基线值 0 的分量（当对端可行时 |c1| ≥ root_lo，故 c1 符号决定选段）
+    if c1 < 0:
+        return upper_lo, min(upper_hi, -c1 - root_lo)   # 左段
+    return max(upper_lo, -c1 + root_lo), upper_hi        # 右段
 
 
-def node_feasible_interval(i, Rp, ctx):
-    """节点 i 的伸缩量 x_i 的可行区间 [lo, hi]（各关联边约束的交集）。"""
+def node_feasible_interval(i, delta_global, ctx):
+    """节点 i 的 δ 可行区间 [lo, hi]（各关联边约束的交集 + 行程限幅）。
+
+    delta_global 为全局 δ 数组（口径外为 0），用于取对端 δ；与原径向版本
+    相比，直接用 act_dir 几何，无需径向夹角 psi。
+    """
     lo, hi = -EXT_LIMIT, EXT_LIMIT
     ni = ctx["ap_idx"][i]
-    R_base = ctx["R_all"][ni]
     for e in ctx["inc"][i]:
         other = ctx["je"][e] if ctx["ie"][e] == ni else ctx["ie"][e]
-        lo_e, hi_e = edge_interval_Rp(e, Rp[other], R_base, ctx)
-        lo = max(lo, R_base - hi_e)
-        hi = min(hi, R_base - lo_e)
+        lo_e, hi_e = edge_interval_delta(e, ni, delta_global[other], ctx)
+        lo = max(lo, lo_e)
+        hi = min(hi, hi_e)
     if lo > hi:
         lo = hi = 0.5 * (lo + hi)
     return lo, hi
@@ -262,17 +357,21 @@ def fit_coordinate_descent(ctx, e_ap, sweeps=60, seed=0, x_init=None):
     逐节点一维最优即 x_i = clip(e_i, lo, hi)，可行区间由边约束解析给出，
     故每轮扫描单调下降。边约束成对耦合，坐标下降会停在“坐标方向”的局部最优，
     因此可传入 x_init 从其它求解器的解出发再扫描（换一个 basin 继续下降）。
+
+    维护全局 δ 数组 delta_global（口径外为 0），供 node_feasible_interval
+    取对端 δ；与原径向版本相比，无需维护 Rp（调节后半径）。
     """
     rng = np.random.default_rng(seed)
     nap = ctx["nap"]
     x = np.clip(e_ap if x_init is None else x_init, -EXT_LIMIT, EXT_LIMIT)
-    Rp = ctx["R_all"].copy()
-    Rp[ctx["ap_idx"]] -= x
+    delta_global = np.zeros(ctx["N"])
+    delta_global[ctx["ap_idx"]] = x
     for _ in range(sweeps):
         for i in rng.permutation(nap):
-            lo, hi = node_feasible_interval(i, Rp, ctx)
-            x[i] = min(max(e_ap[i], lo), hi)
-            Rp[ctx["ap_idx"][i]] = ctx["R_all"][ctx["ap_idx"][i]] - x[i]
+            lo, hi = node_feasible_interval(i, delta_global, ctx)
+            new = min(max(e_ap[i], lo), hi)
+            delta_global[ctx["ap_idx"][i]] = new
+            x[i] = new
     return x
 
 
@@ -367,11 +466,12 @@ def solve_adjustment(pos, panels, alpha_deg, beta_deg, inner="best",
     ext = np.zeros(len(pos))
     ext[ctx["ap_idx"]] = x
     pos_adj = pos.copy()
-    pos_adj[ctx["ap_idx"]] = u_ap * (R_ap - x)[:, None]
+    # 节点沿附件2 act_dir 移动 δ（与 adjust_nodes 一致，下拉索长度严格不变）
+    pos_adj[ctx["ap_idx"]] = pos[ctx["ap_idx"]] + x[:, None] * ctx["act_dir"][ctx["ap_idx"]]
 
     # 诊断：理想交点（未施加间距约束）下的间距相对变化
     pos_ideal = pos.copy()
-    pos_ideal[ctx["ap_idx"]] = (pos[ctx["ap_idx"]] / R_ap[:, None]) * (R_ap - e_ap)[:, None]
+    pos_ideal[ctx["ap_idx"]] = pos[ctx["ap_idx"]] + e_ap[:, None] * ctx["act_dir"][ctx["ap_idx"]]
     d0 = np.linalg.norm(pos[ctx["ie"]] - pos[ctx["je"]], axis=1)
     d1 = np.linalg.norm(pos_ideal[ctx["ie"]] - pos_ideal[ctx["je"]], axis=1)
     rel_ideal = float((np.abs(d1 - d0) / d0).max())
@@ -383,3 +483,59 @@ def solve_adjustment(pos, panels, alpha_deg, beta_deg, inner="best",
                 fit_rms=float(np.sqrt(np.mean((x - e_ap) ** 2))),
                 rel_max=float(rel.max()) if rel.size else 0.0,
                 rel_ideal=rel_ideal, n_edges=int(rel.size))
+
+
+def check_attachment2(x, ctx):
+    """附件2 几何自洽性校核（独立第七项校核）。
+
+    严格按附件2 几何：促动器沿 act_dir 伸缩 δ，节点同步沿 act_dir 移动，
+    下拉索长度随之严格保持不变。本函数校核：
+    1. 下拉索长度相对变化（应 ≈ 0，因两端同步移动）；
+    2. 工作态促动器长度 = 基准长度 + δ，是否落入 [L_act_0 - EXT_LIMIT, L_act_0 + EXT_LIMIT]；
+    3. 促动器方向与基准球面径向（反向）的夹角（验证附件2 几何一致性）。
+
+    返回 dict，键：
+      pull_rod_rel_max / _mean / _violations  下拉索长度相对变化统计
+      L_act_min / _max / _0_mean              工作态/基准态促动器长度
+      ext_in_range                            伸缩量是否全部在 ±EXT_LIMIT 内
+      act_radial_ang_mean / _max              促动器与径向反向的夹角（°）
+    """
+    pos = ctx["pos"]
+    act_dir = ctx["act_dir"]
+    L_act_0 = ctx["L_act_0"]
+    pos_upper = ctx["pos_upper"]
+    L_pull_0 = ctx["L_pull_0"]
+    ap_idx = ctx["ap_idx"]
+
+    # 全局 δ（口径外为 0）
+    delta_global = np.zeros(ctx["N"])
+    delta_global[ap_idx] = x
+
+    # 工作态促动器上端点：基准态上端 + δ·act_dir
+    pos_upper_adj = pos_upper + delta_global[:, None] * act_dir
+    # 工作态节点位置：基准态节点 + δ·act_dir
+    pos_adj = pos + delta_global[:, None] * act_dir
+    # 工作态下拉索长度（应与基准态严格相等）
+    L_pull_adj = np.linalg.norm(pos_adj - pos_upper_adj, axis=1)
+    rel_pull = np.abs(L_pull_adj - L_pull_0) / L_pull_0
+
+    # 工作态促动器长度（= 基准长度 + δ，因下端点不动、上端点沿 act_dir 移动）
+    L_act_adj = L_act_0 + delta_global
+
+    # 促动器方向 vs 基准球面径向反向（C→节点取反，即指向球心方向）
+    R_all = ctx["R_all"]
+    inward = -pos / R_all[:, None]
+    cos_ang = np.einsum("ij,ij->i", act_dir, inward)
+    ang_deg = np.rad2deg(np.arccos(np.clip(cos_ang, -1, 1)))
+
+    return dict(
+        pull_rod_rel_max=float(rel_pull.max()),
+        pull_rod_rel_mean=float(rel_pull.mean()),
+        pull_rod_violations=int((rel_pull > EDGE_TOL).sum()),
+        L_act_min=float(L_act_adj[ap_idx].min()),
+        L_act_max=float(L_act_adj[ap_idx].max()),
+        L_act_0_mean=float(L_act_0.mean()),
+        ext_in_range=bool(np.abs(delta_global).max() <= EXT_LIMIT + 1e-9),
+        act_radial_ang_mean=float(ang_deg.mean()),
+        act_radial_ang_max=float(ang_deg.max()),
+    )
