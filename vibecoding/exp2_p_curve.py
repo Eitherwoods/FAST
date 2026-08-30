@@ -19,7 +19,7 @@ import common as cm
 from common import ALPHA_Q2, BETA_Q2, axis_vector, load_data
 import schemes_compare as sc
 
-P_GRID = [140.20, 140.30, 140.3743, 140.45, 140.60]
+P_GRID = [140.20, 140.30, 140.3839, 140.45, 140.60]
 
 
 def main():
